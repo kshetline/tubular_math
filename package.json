@@ -1,6 +1,6 @@
 {
   "name": "ks-math",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Miscellaneous math functions",
   "main": "dist/index.js",
   "typings": "dist/index",
@@ -14,8 +14,7 @@
   ],
   "author": "Kerry Shetline <kerry@shetline.com>",
   "license": "MIT",
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "@types/jasmine": "^2.8.6",
     "@types/lodash": "^4.14.102",
