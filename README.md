@@ -1,0 +1,11 @@
+## Math utilities
+
+Provides a few useful math utilities as pass-through declarations of the standard JavaScript Math library.
+
+## Build
+
+Run `npm run build` to build the project. The build artifacts will be stored in the `dist/` directory.
+
+## Running unit tests
+
+Run `npm run test` to execute the unit tests via [Karma](https://karma-runner.github.io).
