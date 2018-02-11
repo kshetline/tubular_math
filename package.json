@@ -10,11 +10,17 @@
     "watch:build": "tsc --watch"
   },
   "keywords": [
-    "math"
+    "angle",
+    "math",
+    "min-max",
+    "spherical",
+    "zero"
   ],
   "author": "Kerry Shetline <kerry@shetline.com>",
   "license": "MIT",
-  "dependencies": {},
+  "dependencies": {
+    "lodash": "^4.17.5"
+  },
   "devDependencies": {
     "@types/jasmine": "^2.8.6",
     "@types/lodash": "^4.14.102",

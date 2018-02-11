@@ -1,6 +1,8 @@
 ## Math utilities
 
-Provides a few useful math utilities as pass-through declarations of the standard JavaScript Math library.
+Provides a few useful math utilities as well as pass-through declarations of the standard JavaScript Math library.
+
+This includes min-max finding, zero finding, assistance for integer and modular math, angle calculations and conversions and formatting, and support for spherical coordinates.
 
 ## Build
 
