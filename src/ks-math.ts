@@ -228,9 +228,8 @@ export function interpolateTabular(xx: number[], yy: number[], x: number, maxSpa
   const weight = (x - xa) / (xb - xa);
   const ya = interpolateAux(xx, yy, x, maxSpan, xa);
   const yb = interpolateAux(xx, yy, x, maxSpan, xb);
-  const y = ya * (1.0 - weight) + yb * weight;
 
-  return y;
+  return ya * (1.0 - weight) + yb * weight;
 }
 
 export function intersects(r1: Rectangle, r2: Rectangle): boolean {
