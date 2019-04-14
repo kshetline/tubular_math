@@ -20,13 +20,12 @@
 import { SphericalPosition } from './spherical-position';
 import { Angle, Unit } from './angle';
 import { Point3D } from './ks-math';
-import * as _ from 'lodash';
 
 export class SphericalPosition3D extends SphericalPosition {
   public static convertRectangular(xOrPoint: number | Point3D, y?: number, z?: number): SphericalPosition3D {
     let x: number;
 
-    if (_.isNumber(xOrPoint)) {
+    if (typeof xOrPoint === 'number') {
       x = <number> xOrPoint;
 
       if (y === undefined || z === undefined)

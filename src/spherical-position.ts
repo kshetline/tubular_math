@@ -19,7 +19,6 @@
 
 import { Angle, Mode, Unit } from './angle';
 import { abs, acos, limitNeg1to1, mod2, TWO_PI } from './ks-math';
-import * as _ from 'lodash';
 
 export class SphericalPosition {
   protected _longitude: Angle;
@@ -27,12 +26,12 @@ export class SphericalPosition {
 
   constructor(longitude: Angle | number = 0, latitude: Angle | number = 0,
               longUnit = Unit.RADIANS, latUnit = Unit.RADIANS) {
-    if (_.isNumber(longitude))
+    if (typeof longitude === 'number')
       this._longitude = new Angle(<number> longitude, longUnit, Mode.RANGE_LIMIT_NONNEGATIVE);
     else
       this._longitude = <Angle> longitude;
 
-    if (_.isNumber(latitude))
+    if (typeof latitude === 'number')
       this._latitude = new Angle(<number> latitude, latUnit);
     else
       this._latitude = <Angle> latitude;
