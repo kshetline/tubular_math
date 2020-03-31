@@ -237,6 +237,15 @@ export function intersects(r1: Rectangle, r2: Rectangle): boolean {
           r1.y < r2.y + r2.h && r1.y + r1.h > r2.y);
 }
 
+export function irandom(maxValue: number): number;
+export function irandom(lowest: number, highest: number): number;
+export function irandom(lowestOrMax?: number, highest?: number): number {
+  if (arguments.length === 1)
+    return 1 + Math.floor(Math.random() * lowestOrMax);
+
+  return lowestOrMax + Math.floor(Math.random() * (highest - lowestOrMax + 1));
+}
+
 export function limitNeg1to1(x: number, tolerance = 0.01): number {
   if (x < -1 - tolerance) {
     if (debug) {
@@ -305,6 +314,18 @@ export function mod2(x: number, y: number): number {
 export const PI = Math.PI;
 
 export const pow = Math.pow;
+
+export function random(): number;
+export function random(maxValue: number): number;
+export function random(lowest: number, highest: number): number;
+export function random(lowestOrMax?: number, highest?: number): number {
+  switch (arguments.length) {
+    case 1: return Math.random() * lowestOrMax;
+    case 2: return lowestOrMax + Math.random() * (highest - lowestOrMax);
+  }
+
+  return Math.random();
+}
 
 export const round = Math.round;
 
