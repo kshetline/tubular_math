@@ -383,5 +383,5 @@ export function union(r1: Rectangle, r2: Rectangle): Rectangle {
   const maxX = max(r1.x + r1.w, r2.x + r2.w);
   const maxY = max(r1.y + r1.h, r2.y + r2.h);
 
-  return {x: minX, y: minY, w: maxX - minX, h: maxY - minY};
+  return { x: minX, y: minY, w: maxX - minX, h: maxY - minY };
 }

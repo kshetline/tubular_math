@@ -1,5 +1,5 @@
 /*
-  Copyright © 2017 Kerry Shetline, kerry@shetline.com
+  Copyright © 2017-2020 Kerry Shetline, kerry@shetline.com
 
   MIT license: https://opensource.org/licenses/MIT
 
@@ -17,9 +17,9 @@
   OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-import { SphericalPosition } from './spherical-position';
-import { Angle, Unit } from './angle';
-import { Point3D } from './ks-math';
+import { SphericalPosition } from './spherical-position.js';
+import { Angle, Unit } from './angle.js';
+import { Point3D } from './math.js';
 
 export class SphericalPosition3D extends SphericalPosition {
   public static convertRectangular(xOrPoint: number | Point3D, y?: number, z?: number): SphericalPosition3D {
@@ -29,7 +29,7 @@ export class SphericalPosition3D extends SphericalPosition {
       x = <number> xOrPoint;
 
       if (y === undefined || z === undefined)
-        throw('Invalid arguments');
+        throw new Error('Invalid arguments');
     }
     else {
       x = (<Point3D> xOrPoint).x;

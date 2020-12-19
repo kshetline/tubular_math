@@ -1,5 +1,5 @@
 /*
-  Copyright © 2017 Kerry Shetline, kerry@shetline.com
+  Copyright © 2017-2020 Kerry Shetline, kerry@shetline.com
 
   MIT license: https://opensource.org/licenses/MIT
 
@@ -20,7 +20,7 @@
   by W.H. Press, B.P. Flannery, S.A. Teukolsky and W.T. Vetterling. Cambridge University Press, 1986.
 */
 
-import { abs } from './ks-math';
+import { abs } from './math.js';
 
 const CGOLD = 0.381966011250105; // (3 - sqrt(5)) / 2
 const ZEPS = 1.0E-20;

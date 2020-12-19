@@ -1,5 +1,5 @@
 /*
-  Copyright © 2017 Kerry Shetline, kerry@shetline.com
+  Copyright © 2017-2020 Kerry Shetline, kerry@shetline.com
 
   MIT license: https://opensource.org/licenses/MIT
 
@@ -17,8 +17,7 @@
   OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-import { abs, floor, mod, mod2, pow, round } from './ks-math';
-import { isUndefined } from 'util';
+import { abs, floor, mod, mod2, pow, round } from './math.js';
 
 export enum Unit {RADIANS, DEGREES, ARC_MINUTES, ARC_SECONDS, HOURS, HOUR_ANGLE_MINUTES, HOUR_ANGLE_SECONDS, ROTATIONS, GRADS}
 export enum Mode {RANGE_LIMIT_SIGNED, RANGE_LIMIT_NONNEGATIVE, RANGE_UNLIMITED}
@@ -124,7 +123,7 @@ export class Angle {
 
   constructor(angle = 0, unit?: Unit, mode = Mode.RANGE_LIMIT_SIGNED) {
     if (unit === undefined)
-        unit = Unit.RADIANS;
+      unit = Unit.RADIANS;
 
     if (mode === Mode.RANGE_LIMIT_SIGNED)
       this.angle = mod2(convertToRadians(angle, unit), TWO_PI);
@@ -274,7 +273,7 @@ export class Angle {
 
   private static toStringAux(units: number, delim1: string, delim2: string, delim3: string,
                              format: number, precision: number, unitsPadding = 0): string {
-    format = (format ? format : 0);
+    format = (format || 0);
 
     const sxg = ((format & (FMT_MINS | FMT_SECS)) !== 0);
 
@@ -283,8 +282,8 @@ export class Angle {
     else if ((format & FMT_DDD) !== 0)
       unitsPadding = 3;
 
-    if (isUndefined(precision)) {
-      if (!isUndefined(format) && sxg)
+    if (precision == null) {
+      if (format != null && sxg)
         precision = 0;
       else
         precision = 3;

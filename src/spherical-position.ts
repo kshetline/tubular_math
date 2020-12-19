@@ -1,5 +1,5 @@
 /*
-  Copyright © 2017 Kerry Shetline, kerry@shetline.com
+  Copyright © 2017-2020 Kerry Shetline, kerry@shetline.com
 
   MIT license: https://opensource.org/licenses/MIT
 
@@ -17,8 +17,8 @@
   OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-import { Angle, Mode, Unit } from './angle';
-import { abs, acos, limitNeg1to1, mod2, TWO_PI } from './ks-math';
+import { Angle, Mode, Unit } from './angle.js';
+import { abs, acos, limitNeg1to1, mod2, TWO_PI } from './math.js';
 
 export class SphericalPosition {
   protected _longitude: Angle;
