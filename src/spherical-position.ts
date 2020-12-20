@@ -17,8 +17,8 @@
   OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-import { Angle, Mode, Unit } from './angle.js';
-import { abs, acos, limitNeg1to1, mod2, TWO_PI } from './math.js';
+import { Angle, Mode, Unit } from './angle';
+import { abs, acos, limitNeg1to1, mod2, TWO_PI } from './math';
 
 export class SphericalPosition {
   protected _longitude: Angle;

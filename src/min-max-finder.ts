@@ -20,7 +20,7 @@
   by W.H. Press, B.P. Flannery, S.A. Teukolsky and W.T. Vetterling. Cambridge University Press, 1986.
 */
 
-import { abs } from './math.js';
+import { abs } from './math';
 
 const CGOLD = 0.381966011250105; // (3 - sqrt(5)) / 2
 const ZEPS = 1.0E-20;

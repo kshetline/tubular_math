@@ -17,9 +17,9 @@
   OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-import { SphericalPosition } from './spherical-position.js';
-import { Angle, Unit } from './angle.js';
-import { Point3D } from './math.js';
+import { SphericalPosition } from './spherical-position';
+import { Angle, Unit } from './angle';
+import { Point3D } from './math';
 
 export class SphericalPosition3D extends SphericalPosition {
   public static convertRectangular(xOrPoint: number | Point3D, y?: number, z?: number): SphericalPosition3D {
