@@ -1,16 +1,18 @@
 {
   "name": "@tubular/math",
-  "version": "2.0.2",
+  "version": "2.0.5",
   "description": "Miscellaneous math functions",
-  "type": "module",
   "browser": "dist/index.umd.js",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
+  "esm2015": "dist/index.js",
+  "typings": "dist/index",
+  "sideEffects": false,
   "scripts": {
     "build": "rimraf dist/ && tsc && webpack && webpack --env target=umd",
     "prepublishOnly": "npm run build",
     "lint": "eslint 'src/**/*.ts'",
-    "test": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' nyc --reporter=html mocha --require ts-node/register src/**/*.spec.ts"
+    "test": "nyc --reporter=html mocha --require ts-node/register src/**/*.spec.ts"
   },
   "keywords": [
     "angle",
