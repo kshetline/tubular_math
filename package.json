@@ -1,15 +1,15 @@
 {
   "name": "@tubular/math",
-  "version": "2.0.5",
+  "version": "2.1.0",
   "description": "Miscellaneous math functions",
-  "browser": "dist/index.umd.js",
-  "main": "dist/index.cjs.js",
+  "browser": "dist/web/index.js",
+  "main": "dist/es5/index.js",
   "module": "dist/index.js",
   "esm2015": "dist/index.js",
   "typings": "dist/index",
   "sideEffects": false,
   "scripts": {
-    "build": "rimraf dist/ && tsc && webpack && webpack --env target=umd",
+    "build": "rimraf dist/ && tsc && tsc --build tsconfig.es5.json && webpack",
     "prepublishOnly": "npm run build",
     "lint": "eslint 'src/**/*.ts'",
     "test": "nyc --reporter=html mocha --require ts-node/register src/**/*.spec.ts"
