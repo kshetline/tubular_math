@@ -1,8 +1,8 @@
 {
   "name": "@tubular/math",
-  "version": "2.1.2",
+  "version": "2.1.3",
   "description": "Miscellaneous math functions",
-  "browser": "dist/web/index.js",
+  "browser:es5": "dist/web/index.js",
   "main": "dist/es5/index.js",
   "module": "dist/index.js",
   "esm2015": "dist/index.js",
