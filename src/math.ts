@@ -1,22 +1,3 @@
-/*
-  Copyright © 2017 Kerry Shetline, kerry@shetline.com
-
-  MIT license: https://opensource.org/licenses/MIT
-
-  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
-  documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
-  rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit
-  persons to whom the Software is furnished to do so, subject to the following conditions:
-
-  The above copyright notice and this permission notice shall be included in all copies or substantial portions of the
-  Software.
-
-  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
-  WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
-  COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-  OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-*/
-
 const debug = false;
 
 export interface Point {
@@ -129,6 +110,7 @@ export function interpolateModular(x0: number, x: number, x1: number, y0: number
   const m2 = modulus / 2;
 
   if (y0 < 0 || y0 >= modulus)
+    // noinspection JSSuspiciousNameCombination
     y0 = mod(y0, modulus);
 
   while (y1 < y0 - m2)
@@ -140,8 +122,10 @@ export function interpolateModular(x0: number, x: number, x1: number, y0: number
   let y = interpolate(x0, x, x1, y0, y1);
 
   if (signedResult && (y < m2 || y >= m2))
+    // noinspection JSSuspiciousNameCombination
     y = mod2(y, modulus);
   else if (y < 0 || y >= modulus)
+    // noinspection JSSuspiciousNameCombination
     y = mod(y, modulus);
 
   return y;
