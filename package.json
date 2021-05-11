@@ -1,6 +1,6 @@
 {
   "name": "@tubular/math",
-  "version": "2.2.1",
+  "version": "2.2.2",
   "description": "Miscellaneous math functions",
   "browser": "dist/web/index.js",
   "browser-es5": "dist/web5/index.js",
@@ -25,7 +25,6 @@
   ],
   "author": "Kerry Shetline <kerry@shetline.com>",
   "license": "MIT",
-  "dependencies": {},
   "devDependencies": {
     "@babel/core": "^7.12.10",
     "@babel/preset-env": "^7.12.11",
