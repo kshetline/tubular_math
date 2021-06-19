@@ -3,14 +3,24 @@
   "version": "3.0.0-alpha.0",
   "description": "Miscellaneous math functions",
   "browser": "dist/umd/index.js",
-  "cjs": "dist/cjs/index.cjs",
   "main": "dist/fesm2015/index.js",
   "module": "dist/fesm2015/index.js",
   "esm2015": "dist/index.js",
   "fesm2015": "dist/fesm2015/index.js",
   "typings": "dist/index",
-  "type": "module",
   "sideEffects": false,
+  "type": "module",
+  "exports": {
+    "node": {
+      "module": "./dist/fesm2015/index.js",
+      "require": "./dist/cjs/index.cjs"
+    },
+    "browser": {
+      "module": "./dist/fesm2015/index.js",
+      "default": "./dist/umd/index.js"
+    },
+    "default": "./dist/fesm2015/index.js"
+  },
   "scripts": {
     "build": "rimraf dist/ && tsc && webpack && webpack --env umd=true && webpack --env cjs=true",
     "prepublishOnly": "npm run build",
