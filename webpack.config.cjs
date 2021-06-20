@@ -6,8 +6,8 @@ module.exports = env => {
   const esVersion = umd ? 'es6' : 'es2018';
   const dir = umd ? 'web' : (cjs ? 'cjs' : 'fesm2015');
   const libraryTarget = umd ? 'umd' : (cjs ? 'commonjs' : 'module');
-  const outFile = `index.${cjs ? 'c' :''}js`;
   const asModule = !umd && !cjs;
+  const outFile = `index.${asModule ? 'm' : ''}js`;
 
   return {
     mode: env?.dev ? 'development' : 'production',
@@ -17,7 +17,7 @@ module.exports = env => {
       outputModule: asModule
     },
     output: {
-      path: resolve(__dirname, 'dist/' + dir),
+      path: resolve(__dirname, 'dist', dir),
       filename: outFile,
       libraryTarget,
       library: umd ? 'tbMath' : undefined
@@ -28,13 +28,17 @@ module.exports = env => {
           test: /\.js$/,
           use: {
             loader: 'babel-loader',
-            options: { presets: [['@babel/preset-env', { targets: {
-              chrome:  umd ? '58' : '64',
-              edge:    umd ? '14' : '79',
-              firefox: umd ? '54' : '78',
-              opera:   umd ? '55' : '51',
-              safari:  umd ? '10' : '12',
-            } }]] }
+            options: {
+              presets: [['@babel/preset-env', {
+                targets: {
+                  chrome:  umd ? '58' : '64',
+                  edge:    umd ? '14' : '79',
+                  firefox: umd ? '54' : '78',
+                  opera:   umd ? '55' : '51',
+                  safari:  umd ? '10' : '12',
+                }
+              }]]
+            }
           },
           resolve: { fullySpecified: false }
         }
