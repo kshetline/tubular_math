@@ -30,7 +30,7 @@ module.exports = env => {
             loader: 'babel-loader',
             options: {
               presets: [['@babel/preset-env', {
-                targets: {
+                targets: { // min ES6 : min ES2018
                   chrome:  umd ? '58' : '64',
                   edge:    umd ? '14' : '79',
                   firefox: umd ? '54' : '78',
