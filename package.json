@@ -1,8 +1,7 @@
 {
   "name": "@tubular/math",
-  "version": "3.0.1-alpha.1",
+  "version": "3.0.1-alpha.2",
   "description": "Miscellaneous math functions",
-  "web": "dist/umd/index.js",
   "main": "dist/cjs/index.js",
   "module": "dist/fesm2015/index.js",
   "esm2015": "dist/index.js",
