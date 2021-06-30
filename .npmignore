@@ -12,3 +12,4 @@
 *.spec.d.ts
 *.spec.js
 *.tgz
+/rollup.config.js
