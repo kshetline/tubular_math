@@ -39,4 +39,27 @@ describe('math', () => {
     for (let i = 0; i < 50; ++i)
       expect(inRangeInclusive(5, irandom(5, 15), 15)).to.be.true;
   });
+
+  it('should match Math.xxx function returns, where applicable', () => {
+    Object.keys(M_).forEach(key => {
+      if (typeof Math[key] === 'function' && key !== 'random') {
+        let a: number;
+        let b: number;
+
+        try {
+          a = M_[key](0.5, 1.5, -2.9);
+          b = Math[key](0.5, 1.5, -2.9);
+        }
+        catch (e) {
+          console.log(key, e.message);
+          a = b = 0;
+        }
+
+        if (isNaN(a))
+          expect(b).to.be.NaN;
+        else
+          expect(a).to.equal(b);
+      }
+    });
+  });
 });
