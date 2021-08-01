@@ -54,19 +54,23 @@ export function asin_deg(x: number): number {
 
 export const atan = Math.atan;
 
+export const atan2 = Math.atan2;
+
 export const atanh = Math.atanh;
 
 export function atan_deg(x: number): number {
   return Math.atan(x) / Math.PI * 180.0;
 }
 
-export const atan2 = Math.atan2;
-
 export function atan2_deg(a: number, b: number): number {
   return Math.atan2(a, b) / Math.PI * 180.0;
 }
 
+export const cbrt = Math.cbrt;
+
 export const ceil = Math.ceil;
+
+export const clz32 = Math.clz32;
 
 export const cos = Math.cos;
 
@@ -97,7 +101,15 @@ export function div_rd(x: number, y: number): number {
 
 export const exp = Math.exp;
 
+export const expm1 = Math.expm1;
+
 export const floor = Math.floor;
+
+export const fround = Math.fround;
+
+export const hypot = Math.hypot;
+
+export const imul = Math.imul;
 
 export function interpolate(x0: number, x: number, x1: number, y0: number, y1: number): number {
   if (x0 === x1)
@@ -259,9 +271,11 @@ export const HALF_PI = Math.PI / 2.0;
 
 export const log = Math.log;
 
-export const log2 = Math.log2;
-
 export const log10 = Math.log10;
+
+export const log1p = Math.log1p;
+
+export const log2 = Math.log2;
 
 export const max = Math.max;
 
@@ -358,6 +372,8 @@ export function to_degree(x: number): number {
 export function to_radian(x: number): number {
   return x * Math.PI / 180.0;
 }
+
+export const trunc = Math.trunc;
 
 export const TWO_PI = Math.PI * 2;
 
