@@ -1,9 +1,26 @@
 export class ZeroFinder {
   private _iterationCount = 0;
+  private x2: number;
   private y: number;
+  private y2: number;
 
-  constructor(private zeroSeekingFunction: Function, private tolerance: number, private maxIterations: number,
-              private x1: number, private y1: number, private x2: number, private y2: number) {
+  constructor(zeroSeekingFunction: (x: number) => number, tolerance: number, maxIterations: number,
+    x1: number, x2: number);
+
+  constructor(zeroSeekingFunction: (x: number) => number, tolerance: number, maxIterations: number,
+    x1: number, y1: number, x2: number, y2: number);
+
+  constructor(private zeroSeekingFunction: (x: number) => number, private tolerance: number, private maxIterations: number,
+              private x1: number, private y1: number, x2?: number, y2?: number) {
+    if (x2 == null) {
+      this.x2 = y1;
+      this.y1 = zeroSeekingFunction(x1);
+      this.y2 = zeroSeekingFunction(y1);
+    }
+    else {
+      this.x2 = x2;
+      this.y2 = y2;
+    }
   }
 
   public getXAtZero(): number {
