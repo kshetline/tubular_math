@@ -42,7 +42,7 @@ describe('math', () => {
 
   it('should match Math.xxx function returns, where applicable', () => {
     Object.keys(M_).forEach(key => {
-      if (typeof Math[key] === 'function' && key !== 'random') {
+      if (typeof Math[key] === 'function' && !/^(random|round)$/.test(key)) {
         let a: number;
         let b: number;
 
@@ -61,5 +61,22 @@ describe('math', () => {
           expect(a).to.equal(b);
       }
     });
+  });
+
+  it('should perform rounding by multiples', () => {
+    expect(M_.round(1.4)).to.equal(1);
+    expect(M_.round(-1.4)).to.equal(-1);
+    expect(M_.round(1.5)).to.equal(2);
+    expect(M_.round(-1.5)).to.equal(-1);
+    expect(M_.round(1.7)).to.equal(2);
+    expect(M_.round(-1.7)).to.equal(-2);
+    expect(M_.round(1400, 100)).to.equal(1400);
+    expect(M_.round(-1400, 100)).to.equal(-1400);
+    expect(M_.round(1400, 1000)).to.equal(1000);
+    expect(M_.round(-1400, 1000)).to.equal(-1000);
+    expect(M_.round(1500, 1000)).to.equal(2000);
+    expect(M_.round(-1500, 1000)).to.equal(-1000);
+    expect(M_.round(1501, 1000)).to.equal(2000);
+    expect(M_.round(-1501, 1000)).to.equal(-2000);
   });
 });

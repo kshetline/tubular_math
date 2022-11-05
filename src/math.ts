@@ -325,7 +325,12 @@ export function random(lowestOrMax?: number, highest?: number): number {
   return Math.random();
 }
 
-export const round = Math.round;
+export function round(x: number, multiple = 1): number {
+  if (multiple === 1)
+    return Math.round(x);
+
+  return x + multiple / 2 - mod(x + multiple / 2, multiple);
+}
 
 export const sign = Math.sign;
 
