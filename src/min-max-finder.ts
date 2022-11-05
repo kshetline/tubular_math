@@ -8,7 +8,7 @@ export class MinMaxFinder {
   private fx: number;
   private isMin = true;
 
-  constructor(private minMaxSeekingFunction: Function, private tolerance: number, private maxIterations: number,
+  constructor(private minMaxSeekingFunction: (x: number) => number, private tolerance: number, private maxIterations: number,
               private ax: number, private bx: number, private cx: number) {
   }
 
