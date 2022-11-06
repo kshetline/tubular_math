@@ -45,10 +45,11 @@ describe('math', () => {
       if (typeof Math[key] === 'function' && key !== 'random') {
         let a: number;
         let b: number;
+        const args = /^(ceil|floor|round)$/.test(key) ? [15.5] : [0.5, 1.5, -2.9];
 
         try {
-          a = M_[key](0.5, 1.5, -2.9);
-          b = Math[key](0.5, 1.5, -2.9);
+          a = M_[key](...args);
+          b = Math[key](...args);
         }
         catch (e) {
           console.log(key, e.message);
@@ -61,5 +62,44 @@ describe('math', () => {
           expect(a).to.equal(b);
       }
     });
+  });
+
+  it('should perform ceil, floor, and round with multiples', () => {
+    expect(M_.round(1.4)).to.equal(1);
+    expect(M_.round(-1.4)).to.equal(-1);
+    expect(M_.round(1.5)).to.equal(2);
+    expect(M_.round(-1.5)).to.equal(-1);
+    expect(M_.round(1.7)).to.equal(2);
+    expect(M_.round(-1.7)).to.equal(-2);
+    expect(M_.round(1400, 100)).to.equal(1400);
+    expect(M_.round(-1400, 100)).to.equal(-1400);
+    expect(M_.round(1400, 1000)).to.equal(1000);
+    expect(M_.round(-1400, 1000)).to.equal(-1000);
+    expect(M_.round(1500, 1000)).to.equal(2000);
+    expect(M_.round(-1500, 1000)).to.equal(-1000);
+    expect(M_.round(1501, 1000)).to.equal(2000);
+    expect(M_.round(-1501, 1000)).to.equal(-2000);
+
+    expect(M_.ceil(1)).to.equal(1);
+    expect(M_.ceil(1.4)).to.equal(2);
+    expect(M_.ceil(1.4, -1)).to.equal(1);
+    expect(M_.ceil(1.5)).to.equal(2);
+    expect(M_.ceil(1.7)).to.equal(2);
+    expect(M_.ceil(10, 10)).to.equal(10);
+    expect(M_.ceil(14, 10)).to.equal(20);
+    expect(M_.ceil(15, 10)).to.equal(20);
+    expect(M_.ceil(17, 10)).to.equal(20);
+    expect(M_.ceil(19.99, 10)).to.equal(20);
+
+    expect(M_.floor(1)).to.equal(1);
+    expect(M_.floor(1.4)).to.equal(1);
+    expect(M_.floor(1.4, -1)).to.equal(2);
+    expect(M_.floor(1.5)).to.equal(1);
+    expect(M_.floor(1.7)).to.equal(1);
+    expect(M_.floor(10, 10)).to.equal(10);
+    expect(M_.floor(14, 10)).to.equal(10);
+    expect(M_.floor(15, 10)).to.equal(10);
+    expect(M_.floor(17, 10)).to.equal(10);
+    expect(M_.floor(19.99, 10)).to.equal(10);
   });
 });
