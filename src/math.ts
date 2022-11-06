@@ -68,7 +68,12 @@ export function atan2_deg(a: number, b: number): number {
 
 export const cbrt = Math.cbrt;
 
-export const ceil = Math.ceil;
+export function ceil(x: number, multiple = 1): number {
+  if (multiple === 1)
+    return Math.ceil(x);
+
+  return -(-x - mod(-x, multiple));
+}
 
 export const clz32 = Math.clz32;
 
@@ -103,7 +108,12 @@ export const exp = Math.exp;
 
 export const expm1 = Math.expm1;
 
-export const floor = Math.floor;
+export function floor(x: number, multiple = 1): number {
+  if (multiple === 1)
+    return Math.floor(x);
+
+  return x - mod(x, multiple);
+}
 
 export const fround = Math.fround;
 
