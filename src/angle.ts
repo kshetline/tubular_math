@@ -1,11 +1,11 @@
 import { abs, floor, mod, mod2, pow, round } from './math';
 
-export enum Unit {RADIANS, DEGREES, ARC_MINUTES, ARC_SECONDS, HOURS, HOUR_ANGLE_MINUTES, HOUR_ANGLE_SECONDS, ROTATIONS, GRADS}
-export enum Mode {RANGE_LIMIT_SIGNED, RANGE_LIMIT_NONNEGATIVE, RANGE_UNLIMITED}
+export enum Unit { RADIANS, DEGREES, ARC_MINUTES, ARC_SECONDS, HOURS, HOUR_ANGLE_MINUTES, HOUR_ANGLE_SECONDS, ROTATIONS, GRADS }
+export enum Mode { RANGE_LIMIT_SIGNED, RANGE_LIMIT_NONNEGATIVE, RANGE_UNLIMITED }
 
-export const PI      = Math.PI;
+export const PI = Math.PI;
 export const HALF_PI = PI / 2.0;
-export const TWO_PI  = PI * 2.0;
+export const TWO_PI = PI * 2.0;
 
 export const FMT_DD = 0x01;
 export const FMT_HH = 0x01;
@@ -65,11 +65,11 @@ export function convertFromRadians(angle: number, unit: Unit): number {
 }
 
 export class Angle {
-  public static ZERO     = new Angle(0.0);
-  public static RIGHT    = new Angle(HALF_PI);
+  public static ZERO = new Angle(0.0);
+  public static RIGHT = new Angle(HALF_PI);
   public static STRAIGHT = new Angle(PI);
 
-  private angle: number; // In radians
+  private readonly angle: number; // In radians
   private cached_sin = 2.0;
   private cached_cos = 2.0;
   private cached_tan = 0.0;

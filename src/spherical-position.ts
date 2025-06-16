@@ -8,14 +8,14 @@ export class SphericalPosition {
   constructor(longitude: Angle | number = 0, latitude: Angle | number = 0,
               longUnit = Unit.RADIANS, latUnit = Unit.RADIANS) {
     if (typeof longitude === 'number')
-      this._longitude = new Angle(<number> longitude, longUnit, Mode.RANGE_LIMIT_NONNEGATIVE);
+      this._longitude = new Angle(longitude, longUnit, Mode.RANGE_LIMIT_NONNEGATIVE);
     else
-      this._longitude = <Angle> longitude;
+      this._longitude = longitude;
 
     if (typeof latitude === 'number')
-      this._latitude = new Angle(<number> latitude, latUnit);
+      this._latitude = new Angle(latitude, latUnit);
     else
-      this._latitude = <Angle> latitude;
+      this._latitude = latitude;
   }
 
   public get longitude(): Angle {
@@ -57,6 +57,6 @@ export class SphericalPosition {
   }
 
   public toString(): string {
-    return 'lon: ' + this.longitude + ', lat: ' + this.latitude;
+    return `lon: ${this.longitude}, lat: ${this.latitude}`;
   }
 }

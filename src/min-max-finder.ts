@@ -1,3 +1,5 @@
+/* eslint-disable @stylistic/no-multi-spaces */
+
 import { abs } from './math';
 
 const CGOLD = 0.381966011250105; // (3 - sqrt(5)) / 2

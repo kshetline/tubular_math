@@ -307,7 +307,7 @@ export function mod(x: number, y: number): number {
 
 /**
  * For use with values such as angles, this modulo function splits the range of the modulus
- * between negative and positive numbers, [-y/2, y/2), e.g. for a y of 360, the result ranges
+ * between negative and positive numbers, [-y/2, y/2), e.g., for a y of 360, the result ranges
  * from -180 up to (but not including) 180. This function can return non-integer values.
  */
 export function mod2(x: number, y: number): number {

@@ -7,15 +7,15 @@ export class SphericalPosition3D extends SphericalPosition {
     let x: number;
 
     if (typeof xOrPoint === 'number') {
-      x = <number> xOrPoint;
+      x = xOrPoint;
 
       if (y === undefined || z === undefined)
         throw new Error('Invalid arguments');
     }
     else {
-      x = (<Point3D> xOrPoint).x;
-      y = (<Point3D> xOrPoint).y;
-      z = (<Point3D> xOrPoint).z;
+      x = xOrPoint.x;
+      y = xOrPoint.y;
+      z = xOrPoint.z;
     }
 
     return new SphericalPosition3D(Angle.atan2_nonneg(y, x),
@@ -54,7 +54,7 @@ export class SphericalPosition3D extends SphericalPosition {
 
     const x = R * B.cos * L.cos - R0 * B0.cos * L0.cos;
     const y = R * B.cos * L.sin - R0 * B0.cos * L0.sin;
-    const z = R * B.sin         - R0 * B0.sin;
+    const z = R * B.sin - R0 * B0.sin;
 
     return SphericalPosition3D.convertRectangular(x, y, z);
   }
