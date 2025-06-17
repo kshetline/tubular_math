@@ -104,6 +104,8 @@ export function div_rd(x: number, y: number): number {
   return Math.floor(x / y);
 }
 
+export const E = Math.E;
+
 export const exp = Math.exp;
 
 export const expm1 = Math.expm1;
@@ -193,10 +195,10 @@ function interpolateAux(xx: number[], yy: number[], x: number, maxSpan: number, 
 // Note: To use maxSpan (by specifying a positive value) array data must be pre-sorted
 // by ascending x value.
 //
-export function interpolateTabular(xx: number[], yy: number[], x: number, maxSpan: number): number {
+export function interpolateTabular(xx: number[], yy: number[], x: number, maxSpan = 0): number {
   const n = Math.min(xx.length, yy.length);
 
-  if (maxSpan <= 0.0)
+  if (maxSpan <= 0)
     return interpolateOverIntRange(xx, yy, x, 0, n - 1);
 
   // To avoid sudden jumps in the return value of this function as we shift
@@ -254,6 +256,7 @@ export function irandom(lowestOrMax?: number, highest?: number): number {
 
 export function limitNeg1to1(x: number, tolerance = 0.01): number {
   if (x < -1 - tolerance) {
+    /* istanbul ignore next */
     if (debug) {
       console.debug('Value out of range: ' + x + ' < -1.0');
       console.trace();
@@ -262,6 +265,7 @@ export function limitNeg1to1(x: number, tolerance = 0.01): number {
     return -1.0;
   }
   else if (x > 1 + tolerance) {
+    /* istanbul ignore next */
     if (debug) {
       console.debug('Value out of range: ' + x + ' > 1.0');
       console.trace();
@@ -276,6 +280,14 @@ export function limitNeg1to1(x: number, tolerance = 0.01): number {
   else
     return x;
 }
+
+export const LN10 = Math.LN10;
+
+export const LN2 = Math.LN2;
+
+export const LOG10E = Math.LOG10E;
+
+export const LOG2E = Math.LOG2E;
 
 export const HALF_PI = Math.PI / 2.0;
 
@@ -367,6 +379,10 @@ export function sin_deg(x: number): number {
 }
 
 export const sqrt = Math.sqrt;
+
+export const SQRT1_2 = Math.SQRT1_2;
+
+export const SQRT2 = Math.SQRT2;
 
 export function squared(x: number): number {
   return x * x;
