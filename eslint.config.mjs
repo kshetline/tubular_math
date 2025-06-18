@@ -77,6 +77,7 @@ export default [
       '@stylistic/no-multi-spaces': ['error', { 'ignoreEOLComments': true }],
       '@stylistic/no-new': 'off',
       '@stylistic/no-return-assign': 'off',
+      '@typescript-eslint/no-require-imports': 'off',
       '@stylistic/no-useless-constructor': 'off',
       '@/no-useless-constructor': 'error',
       '@stylistic/no-unused-expressions': 'off',
