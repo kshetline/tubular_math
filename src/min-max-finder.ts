@@ -1,3 +1,5 @@
+// Parabolic interpolation via Brent's Method, translated from Numerical Recipes in C.
+
 /* eslint-disable @stylistic/no-multi-spaces */
 
 import { abs } from './math';
@@ -35,8 +37,8 @@ export class MinMaxFinder {
     let e = 0.0;
     let sign = 1.0;
 
-    a = (this.ax < this.cx ? this.ax : this.cx);
-    b = (this.ax > this.cx ? this.ax : this.cx);
+    a = Math.min(this.ax, this.cx);
+    b = Math.max(this.ax, this.cx);
     x = w = v = this.bx;
     this.fx = this.minMaxSeekingFunction(x);
 
@@ -84,6 +86,7 @@ export class MinMaxFinder {
           d = p / q;
           u = x + d;
 
+          /* istanbul ignore next */ // TODO: Does this condition ever come up?
           if (u - a < tol2 || b - u < tol2)
             d = Math.sign(xm - x) * tol1;
         }
