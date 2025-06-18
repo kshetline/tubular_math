@@ -1,3 +1,5 @@
+// noinspection JSSuspiciousNameCombination
+
 export class ZeroFinder {
   private _iterationCount = 0;
   private x2: number;
