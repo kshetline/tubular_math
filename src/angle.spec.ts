@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { Angle, convertFromRadians, convertToRadians, FMT_SECS, Mode, Unit } from './angle';
+import { Angle, convertFromRadians, convertToRadians, FMT_DD, FMT_DDD, FMT_MINS, FMT_SECS, FMT_SIGNED, Mode, Unit } from './angle';
 import { HALF_PI, PI, TWO_PI } from './math';
 
 const ALL_UNITS = Object.values(Unit).filter(v => typeof v === 'number') as Unit[];
@@ -147,8 +147,29 @@ describe('Angle', () => {
     expect(Angle.RIGHT.divide_nonneg(-3).degrees).to.approximately(330, epsilon);
   });
 
-  it('should correctly format angles as strings', () => {
+  it('toSuffixedString', () => {
+    expect(Angle.RIGHT.toSuffixedString('N', 'S')).to.equal('90.000°N');
+    expect(Angle.RIGHT.negate().toSuffixedString('N', 'S')).to.equal('90.000°S');
+  });
+
+  it('toHourString', () => {
     expect(Angle.RIGHT.toHourString(null, 2)).to.equal('6.00h');
+  });
+
+  it('toTimeString', () => {
+    expect(Angle.RIGHT.toTimeString(FMT_MINS)).to.equal('06:00');
+    expect(Angle.RIGHT.toTimeString(FMT_SECS)).to.equal('06:00:00');
+    expect(new Angle(6 + 1 / 3600, Unit.HOURS).toTimeString(FMT_SECS)).to.equal('06:00:01');
+    expect(new Angle(6 + 10 / 3600, Unit.HOURS).toTimeString(FMT_SECS)).to.equal('06:00:10');
+    expect(new Angle(6 + 1 / 60, Unit.HOURS).toTimeString(FMT_MINS)).to.equal('06:01');
+    expect(new Angle(6 + 10 / 60, Unit.HOURS).toTimeString(FMT_MINS)).to.equal('06:10');
+  });
+
+  it('toString', () => {
     expect(new Angle(42.75, Unit.DEGREES).toString(FMT_SECS)).to.equal('42°45\'00"');
+    expect(new Angle(42.75, Unit.DEGREES).toString(FMT_DD)).to.equal('42.750°');
+    expect(new Angle(42.75, Unit.DEGREES).toString(FMT_DDD)).to.equal('042.750°');
+    expect(new Angle(-42.75, Unit.DEGREES).toString(FMT_DDD)).to.equal('-042.750°');
+    expect(new Angle(42.75, Unit.DEGREES).toString(FMT_DDD | FMT_SIGNED)).to.equal('+042.750°');
   });
 });
