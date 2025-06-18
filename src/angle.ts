@@ -210,7 +210,7 @@ export class Angle {
   }
 
   public negate(mode = Mode.RANGE_LIMIT_SIGNED): Angle {
-    return new Angle(-this.angle, Unit.RADIANS, mode === undefined ? Mode.RANGE_UNLIMITED : mode);
+    return new Angle(-this.angle, Unit.RADIANS, mode);
   }
 
   // Sounds contradictory, doesn't it? Return whatever angle is 180 degrees away, as a non-negative value.
