@@ -32,8 +32,8 @@ export function acot(x: number): number {
   return Math.PI / 2.0 - Math.atan(x);
 }
 
-export function acot2(a: number, b: number): number {
-  return Math.PI / 2.0 - Math.atan2(a, b);
+export function acot2(y: number, x: number): number {
+  return Math.PI / 2.0 - Math.atan2(y, x);
 }
 
 export function acot_deg(x: number): number {
@@ -254,7 +254,7 @@ export function irandom(lowestOrMax?: number, highest?: number): number {
   return lowestOrMax + Math.floor(Math.random() * (highest - lowestOrMax + 1));
 }
 
-export function limitNeg1to1(x: number, tolerance = 0.01): number {
+function _limitNeg1to1(x: number, tolerance = 0.01): number {
   if (x < -1 - tolerance) {
     /* istanbul ignore next */
     if (debug) {
@@ -280,6 +280,8 @@ export function limitNeg1to1(x: number, tolerance = 0.01): number {
   else
     return x;
 }
+
+export const limitNeg1to1: (x: number) => number = _limitNeg1to1;
 
 export const LN10 = Math.LN10;
 
