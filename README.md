@@ -11,11 +11,11 @@ This includes min-max finding, zero finding, assistance for integer and modular 
 
 `npm install @tubular/math`
 
-`import { `...`} from '@tubular/math'; // ESM`
+`import { cos_deg, interpolate, union, `...`} from '@tubular/math'; // ESM`
 
 ...or...
 
-`const {`...`} = require('@tubular/math'); // CommonJS`
+`const { cos_deg, interpolate, union, `...`} = require('@tubular/math'); // CommonJS`
 
 _Documentation examples will assume **@tubular/math** has been imported as above._
 
@@ -26,7 +26,7 @@ To remotely download the full code as an ES module:
 ```html
 <script type="module">
   import('https://unpkg.com/@tubular/math/dist/index.min.mjs').then(pkg => {
-    const {  } = pkg;
+    const { cos_deg, interpolate, union } = pkg;
 
     // ...
   });
@@ -151,3 +151,18 @@ function mod2(x: number, y: number): number;
 
 Like the `mod` function above, except when `y` is positive, the returned value will be in the range &#91;‑_y_/2, _y_/2). When `y` is negative, the returned value will be in the range (‑_y_/2, _y_/2].
 
+```typescript
+function random(): number;
+function random(maxValue: number): number;
+function random(lowest: number, highest: number): number;
+```
+
+- With no arguments, this function is equivalent to `Math.random`.
+- With one argument, this function returns a random number in the range [0, maxValue).
+- With two arguments, this function returns a random number in the range [lowest, highest).
+
+```typescript
+function round(x: number, multiple = 1): number;
+```
+
+Same as `Math.round` when the second argument is omitted (or equals 1), otherwise rounds `x` to the nearest integer multiple of `multiple`, rounding upward when x is exactly halfway between two multiples.
