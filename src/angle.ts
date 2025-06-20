@@ -4,8 +4,8 @@ export enum Unit { RADIANS, DEGREES, ARC_MINUTES, ARC_SECONDS, HOURS, HOUR_ANGLE
 export enum Mode { RANGE_LIMIT_SIGNED, RANGE_LIMIT_NONNEGATIVE, RANGE_UNLIMITED }
 
 export const PI = Math.PI;
-export const HALF_PI = PI / 2.0;
-export const TWO_PI = PI * 2.0;
+export const HALF_PI = PI / 2;
+export const TWO_PI = PI * 2;
 
 export const FMT_DD = 0x01;
 export const FMT_HH = 0x01;
@@ -19,21 +19,21 @@ export function convertToRadians(angle: number, unit: Unit): number {
     case Unit.RADIANS:
       return angle;
     case Unit.DEGREES:
-      return angle / 180.0 * PI;
+      return angle / 180 * PI;
     case Unit.ARC_MINUTES:
-      return angle / 10800.0 * PI;
+      return angle / 10800 * PI;
     case Unit.ARC_SECONDS:
-      return angle / 648000.0 * PI;
+      return angle / 648000 * PI;
     case Unit.HOURS:
-      return angle / 12.0 * PI;
+      return angle / 12 * PI;
     case Unit.HOUR_ANGLE_MINUTES:
-      return angle / 720.0 * PI;
+      return angle / 720 * PI;
     case Unit.HOUR_ANGLE_SECONDS:
-      return angle / 43200.0 * PI;
+      return angle / 43200 * PI;
     case Unit.ROTATIONS:
       return angle * TWO_PI;
     case Unit.GRADS:
-      return angle / 200.0 * PI;
+      return angle / 200 * PI;
   }
 
   return NaN;
@@ -44,35 +44,35 @@ export function convertFromRadians(angle: number, unit: Unit): number {
     case Unit.RADIANS:
       return angle;
     case Unit.DEGREES:
-      return angle * 180.0 / PI;
+      return angle * 180 / PI;
     case Unit.ARC_MINUTES:
-      return angle * 10800.0 / PI;
+      return angle * 10800 / PI;
     case Unit.ARC_SECONDS:
-      return angle * 648000.0 / PI;
+      return angle * 648000 / PI;
     case Unit.HOURS:
-      return angle * 12.0 / PI;
+      return angle * 12 / PI;
     case Unit.HOUR_ANGLE_MINUTES:
-      return angle * 720.0 / PI;
+      return angle * 720 / PI;
     case Unit.HOUR_ANGLE_SECONDS:
-      return angle * 43200.0 / PI;
+      return angle * 43200 / PI;
     case Unit.ROTATIONS:
       return angle / TWO_PI;
     case Unit.GRADS:
-      return angle * 200.0 / PI;
+      return angle * 200 / PI;
   }
 
   return NaN;
 }
 
 export class Angle {
-  public static ZERO = new Angle(0.0);
+  public static ZERO = new Angle(0);
   public static RIGHT = new Angle(HALF_PI);
   public static STRAIGHT = new Angle(PI);
 
   private readonly angle: number; // In radians
-  private cached_sin = 2.0;
-  private cached_cos = 2.0;
-  private cached_tan = 0.0;
+  private cached_sin = 2;
+  private cached_cos = 2;
+  private cached_tan = 0;
 
   public static asin(x: number): Angle {
     return new Angle(Math.asin(x));
@@ -105,6 +105,21 @@ export class Angle {
   constructor(angle = 0, unit?: Unit, mode = Mode.RANGE_LIMIT_SIGNED) {
     if (unit === undefined)
       unit = Unit.RADIANS;
+
+    if (angle === 0 && Angle.ZERO)
+      return Angle.ZERO;
+    else if (unit === Unit.RADIANS) {
+      if (angle === HALF_PI && Angle.RIGHT)
+        return Angle.RIGHT;
+      else if ((angle === PI || angle === -PI) && mode === Mode.RANGE_LIMIT_SIGNED && Angle.STRAIGHT)
+        return Angle.STRAIGHT;
+    }
+    else if (unit === Unit.DEGREES) {
+      if (angle === 90 && Angle.RIGHT)
+        return Angle.RIGHT;
+      else if ((angle === 180 || angle === -180) && mode === Mode.RANGE_LIMIT_SIGNED && Angle.STRAIGHT)
+        return Angle.STRAIGHT;
+    }
 
     if (mode === Mode.RANGE_LIMIT_SIGNED)
       this.angle = mod2(convertToRadians(angle, unit), TWO_PI);
@@ -147,23 +162,23 @@ export class Angle {
   }
 
   public get sin(): number {
-    if (this.cached_sin > 1.0)
+    if (this.cached_sin > 1)
       this.cached_sin = Math.sin(this.angle);
 
     return this.cached_sin;
   }
 
   public get cos(): number {
-    if (this.cached_cos > 1.0)
+    if (this.cached_cos > 1)
       this.cached_cos = Math.cos(this.angle);
 
     return this.cached_cos;
   }
 
   public get tan(): number {
-    if (this.angle === 0.0)
-      return 0.0;
-    else if (this.cached_tan === 0.0)
+    if (this.angle === 0)
+      return 0;
+    else if (this.cached_tan === 0)
       this.cached_tan = Math.tan(this.angle);
 
     return this.cached_tan;

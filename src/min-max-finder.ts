@@ -19,7 +19,7 @@ export class MinMaxFinder {
   public getXAtMinMax(): number {
     let a: number;
     let b: number;
-    let d = 0.0;
+    let d = 0;
     let etemp: number;
     let fu: number;
     let fv: number;
@@ -34,8 +34,8 @@ export class MinMaxFinder {
     let w: number;
     let x: number;
     let xm: number;
-    let e = 0.0;
-    let sign = 1.0;
+    let e = 0;
+    let sign = 1;
 
     a = Math.min(this.ax, this.cx);
     b = Math.max(this.ax, this.cx);
@@ -46,7 +46,7 @@ export class MinMaxFinder {
     if (this.fx > this.minMaxSeekingFunction(this.ax)) {
       this.isMin = false;
       this.fx *= -1;
-      sign = -1.0;
+      sign = -1;
     }
     else
       this.isMin = true;
@@ -57,7 +57,7 @@ export class MinMaxFinder {
     while (++this._iterationCount <= this.maxIterations) {
       xm = 0.5 * (a + b);
       tol1 = this.tolerance * abs(x) + ZEPS;
-      tol2 = 2.0 * tol1;
+      tol2 = 2 * tol1;
 
       if (abs(x - xm) <= tol2 - 0.5 * (b - a)) {
         this.fx *= sign;
@@ -69,9 +69,9 @@ export class MinMaxFinder {
         r = (x - w) * (this.fx - fv);
         q = (x - v) * (this.fx - fw);
         p = (x - v) * q - (x - w) * r;
-        q = 2.0 * (q - r);
+        q = 2 * (q - r);
 
-        if (q > 0.0)
+        if (q > 0)
           p = -p;
 
         q = abs(q);

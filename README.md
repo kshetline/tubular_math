@@ -98,6 +98,21 @@ function ceil(x: number, multiple = 1): number;
 Same as `Math.ceil` when the second argument is omitted (or equals 1), otherwise rounds `x` upward to the nearest integer multiple of `multiple`.
 
 ```typescript
+function convertFromRadians(angle: number, unit: Unit): number
+```
+
+Converts an angle expressed in radians to an angle expressed in `unit`, where `unit` is one of the follow enumerated values:
+
+> `enum Unit { RADIANS, DEGREES, ARC_MINUTES, ARC_SECONDS, HOURS, HOUR_ANGLE_MINUTES, HOUR_ANGLE_SECONDS, ROTATIONS, GRADS }`
+
+```typescript
+function convertToRadians(angle: number, unit: Unit): number
+```
+
+Converts an angle expressed expressed in `unit` to an angle expressed in radians, where `unit` is one of the above-listed enumerated values, e.g. `Unit.ARC_MINUTES`.
+
+
+```typescript
 function cos_deg(x: number): number;
 ```
 
@@ -251,3 +266,14 @@ interface Rectangle {
 }
 ```
 
+## The `Angle` class
+
+The `Angle` class represents immutable angle values, with methods to facilitate angular calculations and formatting angular values.
+
+### Constructor
+
+```typescript
+constructor(angle = 0, unit?: Unit, mode = Mode.RANGE_LIMIT_SIGNED)
+```
+
+- With no arguments, `new Angle()` creates a zero-valued angle, equivalent to the constant Angle.ZERO.

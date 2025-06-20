@@ -37,7 +37,7 @@ export class ZeroFinder {
       if (Math.abs(this.y) <= this.tolerance)
         break;
 
-      if ((this.y1 < this.y2 && this.y < 0.0) || (this.y1 > this.y2 && this.y > 0.0)) {
+      if ((this.y1 < this.y2 && this.y < 0) || (this.y1 > this.y2 && this.y > 0)) {
         this.x1 = x;
         this.y1 = this.y;
       }

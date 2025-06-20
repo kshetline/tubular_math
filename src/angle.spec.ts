@@ -9,6 +9,13 @@ describe('Angle', () => {
   it('should create Angle instances', () => {
     expect(new Angle().radians).to.equal(0);
     expect(new Angle(444, Unit.DEGREES, Mode.RANGE_UNLIMITED).degrees).to.equal(444);
+    expect(new Angle(0)).to.equal(Angle.ZERO);
+    expect(new Angle(HALF_PI)).to.equal(Angle.RIGHT);
+    expect(new Angle(PI)).to.equal(Angle.STRAIGHT);
+    expect(new Angle(-PI)).to.equal(Angle.STRAIGHT);
+    expect(new Angle(90, Unit.DEGREES)).to.equal(Angle.RIGHT);
+    expect(new Angle(180, Unit.DEGREES)).to.equal(Angle.STRAIGHT);
+    expect(new Angle(-180, Unit.DEGREES)).to.equal(Angle.STRAIGHT);
   });
 
   it('should return basic unit conversions', () => {
