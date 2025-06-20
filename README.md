@@ -5,6 +5,8 @@ Provides a few useful math utilities as well as pass-through declarations of the
 
 This includes min-max finding, zero finding, assistance for integer and modular math, angle calculations and conversions and formatting, and support for spherical coordinates.
 
+[![npm](https://img.shields.io/npm/v/@tubular/math.svg)](https://www.npmjs.com/package/@tubular/math/) [![Coverage Status](https://coveralls.io/repos/github/kshetline/tubular_math/badge.svg?branch=master)](https://coveralls.io/github/kshetline/tubular_math) [![npm downloads](https://img.shields.io/npm/dm/@tubular/math.svg)](https://npmjs.org/package/@tubular/math/) ![npm bundle size (scoped)](https://img.shields.io/bundlephobia/min/@tubular/math)  ![license](https://img.shields.io/badge/licence-mit-informational)
+
 ## Installation
 
 ### Via npm
@@ -99,7 +101,7 @@ Same as `Math.ceil` when the second argument is omitted (or equals 1), otherwise
 function cos_deg(x: number): number;
 ```
 
-Same as `Math.asin`, but accepts an argument in degrees rather than radians.
+Same as `Math.cos`, but accepts an argument in degrees rather than radians.
 
 ```typescript
 function div_tt0(x: number, y: number): number;
@@ -134,6 +136,18 @@ This function works identically to the `interpolate` function above except that 
 This is useful for interpolating angular values, not only to pin results to a range such as [0, 360) or [‑180, 180), but when the input value might span across a modular discontinuity.
 
 ```typescript
+function interpolateTabular(xx: number[], yy: number[], x: number, maxSpan = 0): number;
+```
+
+This function finds the value of _y_ for a given value of _x_ by tabular interpolation, using (_x_, _y_) pairs from `xx` and `yy`. `maxSpan` can typically be omitted (or set to 0).
+
+For special cases where there is a possible discontinuity in the source of the tabular values (e.g., some values come from an historical table of past values, whereas others come from a predicative formula for future values), a non-zero `maxSpan` limits the range of tabular values used for the interpolation to tabular value pairs where the _x_ value is in the range [`x - maxSpan`, `x + maxSpan`].
+
+_Note: Using a non-zero `maxSpan` imposes the requirement that the `xx` array be sorted in ascending order, and the `yy` array be sorted so that its values pair correctly with the sorted `xx` values._
+
+What the `maxSpan` limit achieves, in terms of the example cited, is the creation of three separate types of results: results that are based only on historical values, results which are based only on predicative values, and a transitional range of results where the interpolation smoothly blends the two source ranges using weighted averaging.
+
+```typescript
 function limitNeg1to1(x: number): number;
 ```
 
@@ -166,3 +180,74 @@ function round(x: number, multiple = 1): number;
 ```
 
 Same as `Math.round` when the second argument is omitted (or equals 1), otherwise rounds `x` to the nearest integer multiple of `multiple`, rounding upward when x is exactly halfway between two multiples.
+
+```typescript
+function signZN(x: number): number;
+```
+
+Like `Math.sign`, but returns -1 for an `x` of 0.
+
+```typescript
+function signZP(x: number): number;
+```
+
+Like `Math.sign`, but returns 1 for an `x` of 0.
+
+```typescript
+function sin_deg(x: number): number;
+```
+
+Same as `Math.sin`, but accepts an argument in degrees rather than radians.
+
+```typescript
+function squared(x: number): number;
+```
+
+Returns _x_<sup>2</sup>.
+
+```typescript
+function tan_deg(x: number): number;
+```
+
+Same as `Math.tan`, but accepts an argument in degrees rather than radians.
+
+```typescript
+function to_degree(x: number): number;
+```
+
+Converts `x` in radians to degrees.
+
+```typescript
+function to_radian(x: number): number;
+```
+
+Converts `x` in degrees to radians.
+
+```typescript
+function union(r1: Rectangle, r2: Rectangle): Rectangle;
+```
+
+Returns the smallest `Rectangle` which encloses both `r1` and `r2`.
+
+## Data types
+
+```typescript
+interface Point {
+  x: number;
+  y: number;
+}
+
+interface Point3D {
+  x: number;
+  y: number;
+  z: number;
+}
+
+interface Rectangle {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+}
+```
+

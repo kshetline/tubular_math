@@ -66,6 +66,11 @@
       "**/*.spec.ts"
     ]
   },
+  "overrides": {
+    "@rollup/pluginutils": {
+      "rollup": "$rollup"
+    }
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/kshetline/tubular_math.git"
