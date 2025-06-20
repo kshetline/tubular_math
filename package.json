@@ -9,10 +9,17 @@
   "typings": "dist/index",
   "sideEffects": false,
   "exports": {
-    "import": "./dist/index.min.mjs",
-    "require": "./dist/index.min.cjs",
-    "browser": "./dist/index.min.js",
-    "default": "./dist/index.min.cjs"
+    ".": {
+      "import": "./dist/index.min.mjs",
+      "require": "./dist/index.min.cjs",
+      "browser": "./dist/index.min.js",
+      "default": "./dist/index.min.cjs"
+    },
+    "./dist/cjs/index.cjs": "./dist/index.min.cjs",
+    "./dist/cjs/index.js": "./dist/index.min.cjs",
+    "./dist/fesm2015/index.js": "./dist/index.min.mjs",
+    "./dist/fesm2015/index.mjs": "./dist/index.min.mjs",
+    "./dist/umd/index.js": "./dist/index.min.js"
   },
   "engines": {
     "node": ">=10.24.1"
@@ -59,5 +66,8 @@
       "**/*.spec.ts"
     ]
   },
-  "repository": "github:kshetline/tubular_math"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kshetline/tubular_math.git"
+  }
 }
