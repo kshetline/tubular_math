@@ -25,7 +25,7 @@ export class ZeroFinder {
     }
   }
 
-  public getXAtZero(): number {
+  getXAtZero(): number {
     let x: number;
 
     this._iterationCount = 0;
@@ -50,7 +50,7 @@ export class ZeroFinder {
     return x;
   }
 
-  public get lastY(): number { return this.y; }
+  get lastY(): number { return this.y; }
 
-  public get iterationCount(): number { return this._iterationCount; }
+  get iterationCount(): number { return this._iterationCount; }
 }

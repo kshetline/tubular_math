@@ -3,7 +3,7 @@ import { Angle, Unit } from './angle';
 import { Point3D } from './math';
 
 export class SphericalPosition3D extends SphericalPosition {
-  public static convertRectangular(xOrPoint: number | Point3D, y?: number, z?: number): SphericalPosition3D {
+  static convertRectangular(xOrPoint: number | Point3D, y?: number, z?: number): SphericalPosition3D {
     let x: number;
 
     if (typeof xOrPoint === 'number') {
@@ -23,7 +23,7 @@ export class SphericalPosition3D extends SphericalPosition {
                                    Math.sqrt(x * x + y * y + z * z));
   }
 
-  public static from2D(pos: SphericalPosition, radius: number): SphericalPosition3D {
+  static from2D(pos: SphericalPosition, radius: number): SphericalPosition3D {
     return new SphericalPosition3D(pos.longitude, pos.latitude, radius);
   }
 
@@ -31,11 +31,11 @@ export class SphericalPosition3D extends SphericalPosition {
     super(longitude, latitude, longUnit, latUnit);
   }
 
-  public get radius(): number {
+  get radius(): number {
     return this._radius;
   }
 
-  public get xyz(): Point3D {
+  get xyz(): Point3D {
     return {
       x: this._radius * this._latitude.cos * this._longitude.cos,
       y: this._radius * this._latitude.cos * this._longitude.sin,
@@ -43,7 +43,7 @@ export class SphericalPosition3D extends SphericalPosition {
     };
   }
 
-  public translate(newOrigin: SphericalPosition3D): SphericalPosition3D {
+  translate(newOrigin: SphericalPosition3D): SphericalPosition3D {
     const L0 = newOrigin.longitude;
     const B0 = newOrigin.latitude;
     const R0 = newOrigin.radius;
@@ -59,7 +59,7 @@ export class SphericalPosition3D extends SphericalPosition {
     return SphericalPosition3D.convertRectangular(x, y, z);
   }
 
-  public toString(): string {
+  toString(): string {
     return super.toString() + ', rad: ' + this.radius.toFixed(5);
   }
 }

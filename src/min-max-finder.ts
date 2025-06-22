@@ -16,7 +16,7 @@ export class MinMaxFinder {
               private ax: number, private bx: number, private cx: number) {
   }
 
-  public getXAtMinMax(): number {
+  getXAtMinMax(): number {
     let a: number;
     let b: number;
     let d = 0;
@@ -132,11 +132,11 @@ export class MinMaxFinder {
     return x;
   }
 
-  public get foundMaximum(): boolean { return !this.isMin; }
+  get foundMaximum(): boolean { return !this.isMin; }
 
-  public get foundMinimum(): boolean { return this.isMin; }
+  get foundMinimum(): boolean { return this.isMin; }
 
-  public get lastY(): number { return this.fx; }
+  get lastY(): number { return this.fx; }
 
-  public get iterationCount(): number { return this._iterationCount; }
+  get iterationCount(): number { return this._iterationCount; }
 }

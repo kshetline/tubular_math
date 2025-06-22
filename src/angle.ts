@@ -3,9 +3,9 @@ import { abs, floor, mod, mod2, pow, round } from './math';
 export enum Unit { RADIANS, DEGREES, ARC_MINUTES, ARC_SECONDS, HOURS, HOUR_ANGLE_MINUTES, HOUR_ANGLE_SECONDS, ROTATIONS, GRADS }
 export enum Mode { RANGE_LIMIT_SIGNED, RANGE_LIMIT_NONNEGATIVE, RANGE_UNLIMITED }
 
-export const PI = Math.PI;
-export const HALF_PI = PI / 2;
-export const TWO_PI = PI * 2;
+const PI = Math.PI;
+const HALF_PI = PI / 2;
+const TWO_PI = PI * 2;
 
 export const FMT_DD = 0x01;
 export const FMT_HH = 0x01;
@@ -65,40 +65,40 @@ export function convertFromRadians(angle: number, unit: Unit): number {
 }
 
 export class Angle {
-  public static ZERO = new Angle(0);
-  public static RIGHT = new Angle(HALF_PI);
-  public static STRAIGHT = new Angle(PI);
+  static ZERO = new Angle(0);
+  static RIGHT = new Angle(HALF_PI);
+  static STRAIGHT = new Angle(PI);
 
   private readonly angle: number; // In radians
   private cached_sin = 2;
   private cached_cos = 2;
   private cached_tan = 0;
 
-  public static asin(x: number): Angle {
+  static asin(x: number): Angle {
     return new Angle(Math.asin(x));
   }
 
-  public static asin_nonneg(x: number): Angle {
+  static asin_nonneg(x: number): Angle {
     return new Angle(Math.asin(x), Unit.RADIANS, Mode.RANGE_LIMIT_NONNEGATIVE);
   }
 
-  public static acos(x: number): Angle {
+  static acos(x: number): Angle {
     return new Angle(Math.acos(x));
   }
 
-  public static atan(x: number): Angle {
+  static atan(x: number): Angle {
     return new Angle(Math.atan(x));
   }
 
-  public static atan_nonneg(x: number): Angle {
+  static atan_nonneg(x: number): Angle {
     return new Angle(Math.atan(x), Unit.RADIANS, Mode.RANGE_LIMIT_NONNEGATIVE);
   }
 
-  public static atan2(y: number, x: number): Angle {
+  static atan2(y: number, x: number): Angle {
     return new Angle(Math.atan2(y, x));
   }
 
-  public static atan2_nonneg(y: number, x: number): Angle {
+  static atan2_nonneg(y: number, x: number): Angle {
     return new Angle(Math.atan2(y, x), Unit.RADIANS, Mode.RANGE_LIMIT_NONNEGATIVE);
   }
 
@@ -129,53 +129,53 @@ export class Angle {
       this.angle = convertToRadians(angle, unit);
   }
 
-  public get radians(): number {
+  get radians(): number {
     return this.angle;
   }
 
-  public get degrees(): number {
+  get degrees(): number {
     return convertFromRadians(this.angle, Unit.DEGREES);
   }
 
-  public get arcMinutes(): number {
+  get arcMinutes(): number {
     return convertFromRadians(this.angle, Unit.ARC_MINUTES);
   }
 
-  public get arcSeconds(): number {
+  get arcSeconds(): number {
     return convertFromRadians(this.angle, Unit.ARC_SECONDS);
   }
 
-  public get hours(): number {
+  get hours(): number {
     return convertFromRadians(this.angle, Unit.HOURS);
   }
 
-  public get rotations(): number {
+  get rotations(): number {
     return convertFromRadians(this.angle, Unit.ROTATIONS);
   }
 
-  public get grads(): number {
+  get grads(): number {
     return convertFromRadians(this.angle, Unit.GRADS);
   }
 
-  public getAngle(unit = Unit.RADIANS): number {
+  getAngle(unit = Unit.RADIANS): number {
     return convertFromRadians(this.angle, unit);
   }
 
-  public get sin(): number {
+  get sin(): number {
     if (this.cached_sin > 1)
       this.cached_sin = Math.sin(this.angle);
 
     return this.cached_sin;
   }
 
-  public get cos(): number {
+  get cos(): number {
     if (this.cached_cos > 1)
       this.cached_cos = Math.cos(this.angle);
 
     return this.cached_cos;
   }
 
-  public get tan(): number {
+  get tan(): number {
     if (this.angle === 0)
       return 0;
     else if (this.cached_tan === 0)
@@ -184,86 +184,86 @@ export class Angle {
     return this.cached_tan;
   }
 
-  public add(angle2: Angle, mode = Mode.RANGE_LIMIT_SIGNED): Angle {
+  add(angle2: Angle, mode = Mode.RANGE_LIMIT_SIGNED): Angle {
     return new Angle(this.angle + angle2.angle, Unit.RADIANS, mode);
   }
 
-  public add_nonneg(angle2: Angle): Angle {
+  add_nonneg(angle2: Angle): Angle {
     return new Angle(this.angle + angle2.angle, Unit.RADIANS, Mode.RANGE_LIMIT_NONNEGATIVE);
   }
 
-  public subtract(angle2: Angle, mode = Mode.RANGE_LIMIT_SIGNED): Angle {
+  subtract(angle2: Angle, mode = Mode.RANGE_LIMIT_SIGNED): Angle {
     return new Angle(this.angle - angle2.angle, Unit.RADIANS, mode);
   }
 
-  public subtract_nonneg(angle2: Angle): Angle {
+  subtract_nonneg(angle2: Angle): Angle {
     return new Angle(this.angle - angle2.angle, Unit.RADIANS, Mode.RANGE_LIMIT_NONNEGATIVE);
   }
 
-  public complement(mode = Mode.RANGE_LIMIT_SIGNED): Angle {
+  complement(mode = Mode.RANGE_LIMIT_SIGNED): Angle {
     return new Angle(HALF_PI - this.angle, Unit.RADIANS, mode);
   }
 
-  public complement_nonneg(): Angle {
+  complement_nonneg(): Angle {
     return new Angle(HALF_PI - this.angle, Unit.RADIANS, Mode.RANGE_LIMIT_NONNEGATIVE);
   }
 
-  public supplement(mode = Mode.RANGE_LIMIT_SIGNED): Angle {
+  supplement(mode = Mode.RANGE_LIMIT_SIGNED): Angle {
     return new Angle(PI - this.angle, Unit.RADIANS, mode);
   }
 
-  public supplement_nonneg(): Angle {
+  supplement_nonneg(): Angle {
     return new Angle(PI - this.angle, Unit.RADIANS, Mode.RANGE_LIMIT_NONNEGATIVE);
   }
 
-  public opposite(mode = Mode.RANGE_LIMIT_SIGNED): Angle {
+  opposite(mode = Mode.RANGE_LIMIT_SIGNED): Angle {
     return new Angle(this.angle + PI, Unit.RADIANS, mode);
   }
 
-  public opposite_nonneg(): Angle {
+  opposite_nonneg(): Angle {
     return new Angle(this.angle + PI, Unit.RADIANS, Mode.RANGE_LIMIT_NONNEGATIVE);
   }
 
-  public negate(mode = Mode.RANGE_LIMIT_SIGNED): Angle {
+  negate(mode = Mode.RANGE_LIMIT_SIGNED): Angle {
     return new Angle(-this.angle, Unit.RADIANS, mode);
   }
 
   // Sounds contradictory, doesn't it? Return whatever angle is 180 degrees away, as a non-negative value.
-  public negate_nonneg(): Angle {
+  negate_nonneg(): Angle {
     return new Angle(-this.angle, Unit.RADIANS, Mode.RANGE_LIMIT_NONNEGATIVE);
   }
 
-  public multiply(x: number, mode = Mode.RANGE_LIMIT_SIGNED): Angle {
+  multiply(x: number, mode = Mode.RANGE_LIMIT_SIGNED): Angle {
     return new Angle(this.angle * x, Unit.RADIANS, mode);
   }
 
-  public multiply_nonneg(x: number): Angle {
+  multiply_nonneg(x: number): Angle {
     return new Angle(this.angle * x, Unit.RADIANS, Mode.RANGE_LIMIT_NONNEGATIVE);
   }
 
-  public divide(x: number, mode = Mode.RANGE_LIMIT_SIGNED): Angle {
+  divide(x: number, mode = Mode.RANGE_LIMIT_SIGNED): Angle {
     return new Angle(this.angle / x, Unit.RADIANS, mode);
   }
 
-  public divide_nonneg(x: number): Angle {
+  divide_nonneg(x: number): Angle {
     return new Angle(this.angle / x, Unit.RADIANS, Mode.RANGE_LIMIT_NONNEGATIVE);
   }
 
-  public toString(format?: number, precision?: number): string {
+  toString(format?: number, precision?: number): string {
     return Angle.toStringAux(this.degrees, '\u00B0', '\'', '"', format, precision);
   }
 
-  public toSuffixedString(positiveSuffix: string, negativeSuffix: string,
+  toSuffixedString(positiveSuffix: string, negativeSuffix: string,
                           format?: number, precision?: number): string {
     return Angle.toStringAux(abs(this.degrees), '\u00B0', '\'', '"', format, precision) +
            (this.degrees < 0 ? negativeSuffix : positiveSuffix);
   }
 
-  public toHourString(format?: number, precision?: number): string {
+  toHourString(format?: number, precision?: number): string {
     return Angle.toStringAux(this.hours, 'h', 'm', 's', format, precision);
   }
 
-  public toTimeString(format?: number, precision?: number): string {
+  toTimeString(format?: number, precision?: number): string {
     return Angle.toStringAux(this.hours, ':', format === FMT_MINS ? '' : ':', '', format, precision, 2);
   }
 

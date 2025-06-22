@@ -1,9 +1,11 @@
 <!-- omit in toc -->
 # @tubular/math
 
-Provides a few useful math utilities as well as pass-through declarations of the standard JavaScript Math library.
+This library provides several useful math utilities as well as pass-through declarations of the standard JavaScript Math library.
 
-This includes min-max finding, zero finding, assistance for integer and modular math, angle calculations and conversions and formatting, and support for spherical coordinates.
+These include min-max seeking, zero finding, assistance for integer and modular math, angle calculations, conversions and formatting, and support for working with spherical coordinates.
+
+The chief motivation behind the creation of this library was solving astronomical calculations (as those available via [@tubular/astronomy](https://github.com/kshetline/tubular_astronomy)), but the functionality provided here is applicable to many tasks.
 
 [![npm](https://img.shields.io/npm/v/@tubular/math.svg)](https://www.npmjs.com/package/@tubular/math/) [![Coverage Status](https://coveralls.io/repos/github/kshetline/tubular_math/badge.svg?branch=master)](https://coveralls.io/github/kshetline/tubular_math) [![npm downloads](https://img.shields.io/npm/dm/@tubular/math.svg)](https://npmjs.org/package/@tubular/math/) ![npm bundle size (scoped)](https://img.shields.io/bundlephobia/min/@tubular/math)  ![license](https://img.shields.io/badge/licence-mit-informational)
 
@@ -101,7 +103,7 @@ Same as `Math.ceil` when the second argument is omitted (or equals 1), otherwise
 function convertFromRadians(angle: number, unit: Unit): number
 ```
 
-Converts an angle expressed in radians to an angle expressed in `unit`, where `unit` is one of the follow enumerated values:
+Converts an angle expressed in radians to an angle expressed in `unit`, where `unit` is one of the following enumerated values:
 
 > `enum Unit { RADIANS, DEGREES, ARC_MINUTES, ARC_SECONDS, HOURS, HOUR_ANGLE_MINUTES, HOUR_ANGLE_SECONDS, ROTATIONS, GRADS }`
 
@@ -109,7 +111,7 @@ Converts an angle expressed in radians to an angle expressed in `unit`, where `u
 function convertToRadians(angle: number, unit: Unit): number
 ```
 
-Converts an angle expressed expressed in `unit` to an angle expressed in radians, where `unit` is one of the above-listed enumerated values, e.g. `Unit.ARC_MINUTES`.
+Converts an angle expressed in `unit` to an angle expressed in radians, where `unit` is one of the above-listed enumerated values, e.g. `Unit.ARC_MINUTES`.
 
 
 ```typescript
@@ -268,7 +270,7 @@ interface Rectangle {
 
 ## The `Angle` class
 
-The `Angle` class represents immutable angle values, with methods to facilitate angular calculations and formatting angular values.
+The `Angle` class represents immutable angle values, with methods to facilitate angular calculations and formatting angular values. Angle instances cache _sin_, _cos_, and _tan_ values internally so they only need to be computed once.
 
 ### Constructor
 
@@ -277,3 +279,40 @@ constructor(angle = 0, unit?: Unit, mode = Mode.RANGE_LIMIT_SIGNED)
 ```
 
 - With no arguments, `new Angle()` creates a zero-valued angle, equivalent to the constant Angle.ZERO.
+- With one argument an `Angle` instance of `angle` radians is created.
+- With two arguments an `Angle` instance of `angle` expressed in `unit` is created. As a radian value, `angle` will be adjusted to the range [-_π_, _π_), or [-180, 180) as degrees, etc.
+- Given three arguments, and when `mode` is `Mode.RANGE_LIMIT_SIGNED`, a new `Angle` instance is created as described above.<br>
+  A `mode` of `Mode.RANGE_LIMIT_NONNEGATIVE` coerces `angle` into the range [0, 2 _π_) in radians, [0, 360) in degrees, etc.<br>
+  A `mode` of `Mode.RANGE_UNLIMITED` leaves the value of `angle` as-is.
+
+### Static `Angle` factory methods
+
+`Angle.asin`, `Angle.asin_nonneg`, `Angle.acos`, `Angle.atan`, `Angle.atan_nonneg`, `Angle.atan2`, and `Angle.atan2_nonneg` all function the same as the like-named general functions, but returning an `Angle` instance equivalent to the expected value in radians.
+
+### Enums
+
+```typescript
+enum Unit { RADIANS, DEGREES, ARC_MINUTES, ARC_SECONDS,
+            HOURS, HOUR_ANGLE_MINUTES, HOUR_ANGLE_SECONDS,
+            ROTATIONS, GRADS }
+
+enum Mode { RANGE_LIMIT_SIGNED, RANGE_LIMIT_NONNEGATIVE,
+            RANGE_UNLIMITED }
+```
+
+### “OR-able” format constants
+
+These constants can be combined to express combinations of formatting options, such as `FMT_HH | FMT_MINS | FMT_SIGNED` to format an angle as a signed hour angle with minute resolution.
+
+```typescript
+const FMT_DD     = 0x01;
+const FMT_HH     = 0x01;
+const FMT_DDD    = 0x02;
+const FMT_MINS   = 0x04;
+const FMT_SECS   = 0x08;
+const FMT_SIGNED = 0x10;
+```
+
+### Accessors for angle values in different units
+
+`arcMinutes`, `arcSeconds`, `degrees`, `grads`, `hours`, `radians`, `rotations`

@@ -47,6 +47,12 @@ export default [
         }
       ],
       '@stylistic/curly': 'off',
+      '@typescript-eslint/explicit-member-accessibility': [
+        'error',
+        {
+          accessibility: 'no-public'
+        }
+      ],
       '@stylistic/indent': [
         'error',
         2,
