@@ -158,7 +158,7 @@ function interpolateTabular(xx: number[], yy: number[], x: number, maxSpan = 0):
 
 This function finds the value of _y_ for a given value of _x_ by tabular interpolation, using (_x_, _y_) pairs from `xx` and `yy`. `maxSpan` can typically be omitted (or set to 0).
 
-For special cases where there is a possible discontinuity in the source of the tabular values (e.g., some values come from an historical table of past values, whereas others come from a predicative formula for future values), a non-zero `maxSpan` limits the range of tabular values used for the interpolation to tabular value pairs where the _x_ value is in the range [`x - maxSpan`, `x + maxSpan`].
+For special cases where there is a possible discontinuity in the source of the tabular values (e.g. some values come from an historical table of past values, whereas others come from a predicative formula for future values), a non-zero `maxSpan` limits the range of tabular values used for the interpolation to tabular value pairs where the _x_ value is in the range [`x - maxSpan`, `x + maxSpan`].
 
 _Note: Using a non-zero `maxSpan` imposes the requirement that the `xx` array be sorted in ascending order, and the `yy` array be sorted so that its values pair correctly with the sorted `xx` values._
 
@@ -315,7 +315,7 @@ const a = new Angle(60, Unit.DEGREES);
 You can also access different unit values via the function:
 
 ```typescript
-getAngle(unit = Unit.RADIANS): number;
+getAngle(unit = Unit.RADIANS): number
 ```
 
 ...such that `a.getAngle(Unit.HOURS)` would return 4, `a.getAngle(Unit.ARC_MINUTES)` would return 3600, etc.
@@ -368,19 +368,21 @@ divide_nonneg(x: number): Angle;
 ### Formatting/Stringifying
 
 ```typescript
-toString(): string;
+toString(): string
 ```
 
 With no arguments, the default string conversion is to display an angle value in decimal degrees with three digits of precision, followed by a degree (`°`) symbol.
 
 ```typescript
-toString(format?: number, precision?: number): string;
+toString(format?: number, precision?: number): string
 ```
 
 Stringifies an angle as decimal degrees according to `format`, specified using the following constants:
 
 > ```typescript
 > const FMT_DD     = 0x01; // Integer degrees zero-padded to two digits
+> const FMT_HH     = 0x01; // Integer hours zero-padded to two digits (for use with
+>                          //   toHourString and toTimeString)
 > const FMT_DDD    = 0x02; // Integer degrees zero-padded to three digits
 > const FMT_MINS   = 0x04; // Display arcminutes
 > const FMT_SECS   = 0x08; // Display arcseconds (and arcminutes too)
@@ -392,4 +394,25 @@ These constants can be combined using `|` to express combinations of formatting 
 The optional `precision` parameter (defaulting to 0) specifies how many decimal places to display as part of the smallest unit or subunit. For example:
 
 `new Angle(3.5, Unit.DEGREES).toString(null, 2)`         ➜ `3.50°`<br>
+`new Angle(3.5, Unit.DEGREES).toString(FMT_MINS)`       ➜ `3°30'`<br>
 `new Angle(3.5, Unit.DEGREES).toString(FMT_MINS, 2)` ➜ `3°30.00'`
+
+```typescript
+toSuffixedString(positiveSuffix: string, negativeSuffix: string,
+                 format?: number, precision?: number): string
+
+```
+
+This works like `toString()`, but rather than indicating the sign of the angle value using a leading `+` or `-` sign, either `positiveSuffix` or `negativeSuffix` is added at the end of the string representation. Typical values of `positiveSuffix` would be `N` or `W` for North or West. Typical values of `negativeSuffix` would be `S` or `E` for South or East.
+
+```typescript
+ toHourString(format?: number, precision?: number): string
+```
+
+Formats an angle as an hour angle (24 hours = 360°), using `h`, `m` and `s` to denote hours, minutes, and seconds, e.g. `12h34m56s`.
+
+```typescript
+ toTimeString(format?: number, precision?: number): string
+```
+
+Formats an angle as an hour angle (24 hours = 360°), using colons (`:`) to separate hours, minutes, and seconds, e.g. `12:34:56`.

@@ -250,21 +250,26 @@ export class Angle {
   }
 
   toString(format?: number, precision?: number): string {
-    return Angle.toStringAux(this.degrees, '\u00B0', '\'', '"', format, precision);
+    return Angle.toStringAux(this.degrees, '°', '\'', '"', format, precision);
   }
 
   toSuffixedString(positiveSuffix: string, negativeSuffix: string,
-                          format?: number, precision?: number): string {
-    return Angle.toStringAux(abs(this.degrees), '\u00B0', '\'', '"', format, precision) +
+                   format?: number, precision?: number): string {
+    format = (format || 0) & ~FMT_SIGNED;
+
+    return Angle.toStringAux(abs(this.degrees), '°', '\'', '"', format, precision) +
            (this.degrees < 0 ? negativeSuffix : positiveSuffix);
   }
 
   toHourString(format?: number, precision?: number): string {
     format = (format || 0) & ~FMT_DDD;
+
     return Angle.toStringAux(this.hours, 'h', 'm', 's', format, precision);
   }
 
   toTimeString(format?: number, precision?: number): string {
+    format = (format || 0) & ~FMT_DDD;
+
     return Angle.toStringAux(this.hours, ':', format === FMT_MINS ? '' : ':', '', format, precision, 2);
   }
 
