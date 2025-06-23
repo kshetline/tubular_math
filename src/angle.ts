@@ -260,6 +260,7 @@ export class Angle {
   }
 
   toHourString(format?: number, precision?: number): string {
+    format = (format || 0) & ~FMT_DDD;
     return Angle.toStringAux(this.hours, 'h', 'm', 's', format, precision);
   }
 

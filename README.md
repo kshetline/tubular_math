@@ -300,19 +300,96 @@ enum Mode { RANGE_LIMIT_SIGNED, RANGE_LIMIT_NONNEGATIVE,
             RANGE_UNLIMITED }
 ```
 
-### “OR-able” format constants
-
-These constants can be combined to express combinations of formatting options, such as `FMT_HH | FMT_MINS | FMT_SIGNED` to format an angle as a signed hour angle with minute resolution.
-
-```typescript
-const FMT_DD     = 0x01;
-const FMT_HH     = 0x01;
-const FMT_DDD    = 0x02;
-const FMT_MINS   = 0x04;
-const FMT_SECS   = 0x08;
-const FMT_SIGNED = 0x10;
-```
-
-### Accessors for angle values in different units
+### Accessors for angle values in different units, and a conversion function
 
 `arcMinutes`, `arcSeconds`, `degrees`, `grads`, `hours`, `radians`, `rotations`
+
+For example, given:
+
+```typescript
+const a = new Angle(60, Unit.DEGREES);
+```
+
+...`a.hours` has a value of 4, `a.arcMinutes` is 3600, and `a.rotations` is 0.16666666666666666.
+
+You can also access different unit values via the function:
+
+```typescript
+getAngle(unit = Unit.RADIANS): number;
+```
+
+...such that `a.getAngle(Unit.HOURS)` would return 4, `a.getAngle(Unit.ARC_MINUTES)` would return 3600, etc.
+
+### Caching trigonometric accessors
+
+`cos`, `sin`, `tan`
+
+Given `a` as defined in the previous examples, `a.cos` returns 0.5 (well, okay, 0.5000000000000001 because rounding isn’t perfect). Note: No parenthesis!
+
+### `Angle` methods which return instance of `Angle`
+
+```typescript
+add(angle2: Angle, mode = Mode.RANGE_LIMIT_SIGNED): Angle;
+subtract(angle2: Angle, mode = Mode.RANGE_LIMIT_SIGNED): Angle;
+complement(mode = Mode.RANGE_LIMIT_SIGNED): Angle;
+supplement(mode = Mode.RANGE_LIMIT_SIGNED): Angle;
+opposite(mode = Mode.RANGE_LIMIT_SIGNED): Angle;
+negate(mode = Mode.RANGE_LIMIT_SIGNED): Angle;
+multiply(x: number, mode = Mode.RANGE_LIMIT_SIGNED): Angle;
+divide(x: number, mode = Mode.RANGE_LIMIT_SIGNED): Angle;
+```
+
+Omitting the default `mode` argument of `Mode.RANGE_LIMIT_SIGNED` for clarity:
+
+```typescript
+add(angle2: Angle): Angle;
+subtract(angle2: Angle): Angle;
+complement(): Angle;
+supplement(): Angle;
+opposite(): Angle;
+negate(): Angle;
+multiply(x: number): Angle;
+divide(x: number): Angle;
+```
+
+For non-negative results, without the need to specify `Mode.RANGE_LIMIT_NONNEGATIVE`:
+
+```typescript
+add_nonneg(angle2: Angle): Angle;
+subtract_nonneg(angle2: Angle): Angle;
+complement_nonneg(): Angle;
+supplement_nonneg(): Angle;
+opposite_nonneg(): Angle;
+negate_nonneg(): Angle; // Sounds contradictory perhaps, but `negate_nonneg` of 20° is simply 340°.
+multiply_nonneg(x: number): Angle;
+divide_nonneg(x: number): Angle;
+```
+
+### Formatting/Stringifying
+
+```typescript
+toString(): string;
+```
+
+With no arguments, the default string conversion is to display an angle value in decimal degrees with three digits of precision, followed by a degree (`°`) symbol.
+
+```typescript
+toString(format?: number, precision?: number): string;
+```
+
+Stringifies an angle as decimal degrees according to `format`, specified using the following constants:
+
+> ```typescript
+> const FMT_DD     = 0x01; // Integer degrees zero-padded to two digits
+> const FMT_DDD    = 0x02; // Integer degrees zero-padded to three digits
+> const FMT_MINS   = 0x04; // Display arcminutes
+> const FMT_SECS   = 0x08; // Display arcseconds (and arcminutes too)
+> const FMT_SIGNED = 0x10; // Prefix positive values with `+` (`-` appears when needed)
+> ```
+
+These constants can be combined using `|` to express combinations of formatting options, such as `FMT_DD | FMT_MINS | FMT_SIGNED` to format an angle as a signed angle, integer portion zero-padded to two digits, with minute resolution, e.g. 3.5° becomes `+03°30'`.
+
+The optional `precision` parameter (defaulting to 0) specifies how many decimal places to display as part of the smallest unit or subunit. For example:
+
+`new Angle(3.5, Unit.DEGREES).toString(null, 2)`         ➜ `3.50°`<br>
+`new Angle(3.5, Unit.DEGREES).toString(FMT_MINS, 2)` ➜ `3°30.00'`
