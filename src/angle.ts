@@ -102,24 +102,50 @@ export class Angle {
     return new Angle(Math.atan2(y, x), Unit.RADIANS, Mode.RANGE_LIMIT_NONNEGATIVE);
   }
 
+  static parse(s: string, throwException = false): Angle {
+    const result = Angle.#parseAux(s);
+
+    if (result == null && throwException)
+      throw new Error('Invalid angle: ' + s);
+    else
+      return result;
+  }
+
+  static #parseAux(s: string): Angle {
+    const parts = (s || '').split(/([-+hms'"’”°:new])/i);
+    let sign = 1;
+    let unit = Unit.DEGREES;
+
+    if (!parts[0] && (parts[1] === '+' || parts[1] === '-')) {
+      if (parts[1] === '-')
+        sign = -1;
+
+      parts.splice(0, 2);
+    }
+
+    const nums = parts.filter((p, i) => i % 2 === 0).map(p => parseFloat(p.trim()));
+    const delimiters = parts.filter((p, i) => i % 2 === 1).map(p => p.trim().toLowerCase());
+
+    if (nums.length > 1 && isNaN(nums.at(-1)))
+      nums.splice(nums.length - 1, 1);
+
+    if (nums.findIndex(n => isNaN(n)) >= 0)
+      return null;
+
+    if (delimiters.find(d => d === 'h' || d === 'm' || d === ':'))
+      unit = Unit.HOURS;
+    else if (delimiters.at(-1) === 's')
+      sign *= -1;
+
+    return new Angle(sign * (nums[0] + (nums[1] || 0) / 60 + (nums[2] || 0) / 3600), unit, Mode.RANGE_UNLIMITED);
+  }
+
   constructor(angle = 0, unit?: Unit, mode = Mode.RANGE_LIMIT_SIGNED) {
     if (unit === undefined)
       unit = Unit.RADIANS;
 
     if (angle === 0 && Angle.ZERO)
       return Angle.ZERO;
-    else if (unit === Unit.RADIANS) {
-      if (angle === HALF_PI && Angle.RIGHT)
-        return Angle.RIGHT;
-      else if ((angle === PI || angle === -PI) && mode === Mode.RANGE_LIMIT_SIGNED && Angle.STRAIGHT)
-        return Angle.STRAIGHT;
-    }
-    else if (unit === Unit.DEGREES) {
-      if (angle === 90 && Angle.RIGHT)
-        return Angle.RIGHT;
-      else if ((angle === 180 || angle === -180) && mode === Mode.RANGE_LIMIT_SIGNED && Angle.STRAIGHT)
-        return Angle.STRAIGHT;
-    }
 
     if (mode === Mode.RANGE_LIMIT_SIGNED)
       this.angle = mod2(convertToRadians(angle, unit), TWO_PI);
@@ -127,6 +153,11 @@ export class Angle {
       this.angle = mod(convertToRadians(angle, unit), TWO_PI);
     else
       this.angle = convertToRadians(angle, unit);
+
+    if (Angle.RIGHT && this.angle === Angle.RIGHT.angle)
+      return Angle.RIGHT;
+    else if (Angle.STRAIGHT && this.angle === Angle.STRAIGHT.angle)
+      return Angle.STRAIGHT;
   }
 
   get radians(): number {
@@ -269,6 +300,9 @@ export class Angle {
 
   toTimeString(format?: number, precision?: number): string {
     format = (format || 0) & ~FMT_DDD;
+
+    if ((format & FMT_SECS) === 0)
+      format |= FMT_MINS;
 
     return Angle.toStringAux(this.hours, ':', format === FMT_MINS ? '' : ':', '', format, precision, 2);
   }

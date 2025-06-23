@@ -45,7 +45,7 @@ describe('Angle', () => {
 
   it('should generate Angle values from static arc functions', () => {
     const staticFunctions = Object.getOwnPropertyNames(Angle)
-      .filter(prop => !prop.startsWith('to') && typeof Angle[prop] === 'function');
+      .filter(prop => !/^(to|parse)/.test(prop) && typeof Angle[prop] === 'function');
 
     staticFunctions.forEach(func => {
       const nonNeg = func.endsWith('_nonneg');
@@ -164,6 +164,7 @@ describe('Angle', () => {
   });
 
   it('toTimeString', () => {
+    expect(Angle.RIGHT.toTimeString()).to.equal('06:00');
     expect(Angle.RIGHT.toTimeString(FMT_MINS)).to.equal('06:00');
     expect(Angle.RIGHT.toTimeString(FMT_SECS)).to.equal('06:00:00');
     expect(new Angle(6 + 1 / 3600, Unit.HOURS).toTimeString(FMT_SECS)).to.equal('06:00:01');
@@ -178,5 +179,18 @@ describe('Angle', () => {
     expect(new Angle(42.75, Unit.DEGREES).toString(FMT_DDD)).to.equal('042.750°');
     expect(new Angle(-42.75, Unit.DEGREES).toString(FMT_DDD)).to.equal('-042.750°');
     expect(new Angle(42.75, Unit.DEGREES).toString(FMT_DDD | FMT_SIGNED)).to.equal('+042.750°');
+  });
+
+  it('parse', () => {
+    expect(Angle.parse('')).to.be.null;
+    expect(() => Angle.parse('', true)).to.throw();
+    expect(Angle.parse('0')).to.equal(Angle.ZERO);
+    expect(Angle.parse('90')).to.equal(Angle.RIGHT);
+    expect(Angle.parse('90n')).to.equal(Angle.RIGHT);
+    expect(Angle.parse('90S').degrees).to.equal(-90);
+    expect(Angle.parse('-90s')).to.equal(Angle.RIGHT);
+    expect(Angle.parse(' 6  h 00m 00s')).to.equal(Angle.RIGHT);
+    expect(Angle.parse('-12:34:56').toHourString(FMT_SECS)).to.equal('-12h34m56s');
+    expect(Angle.parse('+8°44’').toString(FMT_MINS | FMT_SIGNED)).to.equal("+8°44'");
   });
 });

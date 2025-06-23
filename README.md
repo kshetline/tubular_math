@@ -289,6 +289,16 @@ constructor(angle = 0, unit?: Unit, mode = Mode.RANGE_LIMIT_SIGNED)
 
 `Angle.asin`, `Angle.asin_nonneg`, `Angle.acos`, `Angle.atan`, `Angle.atan_nonneg`, `Angle.atan2`, and `Angle.atan2_nonneg` all function the same as the like-named general functions, but returning an `Angle` instance equivalent to the expected value in radians.
 
+```typescript
+Angle.parse(s: string, throwException = false): Angle
+```
+
+This method parses a string, either in degrees or hours, and an Angle instance. If the string can't be parsed as a valid value, the method either returns `null`, or if `throwException` is specified and `true`, throws an "Invalid angle" exception.
+
+If the characters `h` or `m`, are found within the string, the angle is treated as an hour angle, otherwise the angle is considered to be in degrees. A leading `-` will negate the angle value, or, when parsing degree values, a trailing `e` or `s` will negate the value. (These rules are case-insensitive.)
+
+No range-limiting is applied &mdash; `"700"` will parse as an angle of 700°, not 340° or -20°.
+
 ### Enums
 
 ```typescript
