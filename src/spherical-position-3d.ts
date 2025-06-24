@@ -35,12 +35,17 @@ export class SphericalPosition3D extends SphericalPosition {
     return this._radius;
   }
 
+  private _xyz: Point3D;
+
   get xyz(): Point3D {
-    return {
-      x: this._radius * this._latitude.cos * this._longitude.cos,
-      y: this._radius * this._latitude.cos * this._longitude.sin,
-      z: this._radius * this._latitude.sin
-    };
+    if (!!this._xyz)
+      this._xyz = {
+        x: this._radius * this._latitude.cos * this._longitude.cos,
+        y: this._radius * this._latitude.cos * this._longitude.sin,
+        z: this._radius * this._latitude.sin
+      };
+
+    return this._xyz;
   }
 
   translate(newOrigin: SphericalPosition3D): SphericalPosition3D {

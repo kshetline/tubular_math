@@ -6,7 +6,10 @@ export class SphericalPosition {
   protected _latitude: Angle;
 
   constructor(longitude: Angle | number = 0, latitude: Angle | number = 0,
-              longUnit = Unit.RADIANS, latUnit = Unit.RADIANS) {
+              longUnit = Unit.RADIANS, latUnit?: Unit) {
+    if (latUnit == null)
+      latUnit = longUnit;
+
     if (typeof longitude === 'number')
       this._longitude = new Angle(longitude, longUnit, Mode.RANGE_LIMIT_NONNEGATIVE);
     else

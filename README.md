@@ -336,7 +336,7 @@ getAngle(unit = Unit.RADIANS): number
 
 Given `a` as defined in the previous examples, `a.cos` returns 0.5 (well, okay, 0.5000000000000001 because rounding isn’t perfect). Note: No parenthesis!
 
-### `Angle` methods which return instance of `Angle`
+### `Angle` methods which return instances of `Angle`
 
 ```typescript
 add(angle2: Angle, mode = Mode.RANGE_LIMIT_SIGNED): Angle;
@@ -426,3 +426,70 @@ Formats an angle as an hour angle (24 hours = 360°), using `h`, `m` and `s` to 
 ```
 
 Formats an angle as an hour angle (24 hours = 360°), using colons (`:`) to separate hours, minutes, and seconds, e.g. `12:34:56`.
+
+## The `SphericalPosition` class
+
+Instances of this class are immutable objects containing two `Angle` values, representing longitude and latitude (or right ascension and declination, or azimuth and altitude).
+
+### Constructor
+
+```typescript
+constructor(longitude: Angle | number = 0, latitude: Angle | number = 0,
+            longUnit = Unit.RADIANS, latUnit?: Unit)
+```
+
+- With no arguments an instance equivalent to 0°N, 0°W is created.
+- With two arguments an instance of `longitude`, `latitude` is created. Numerical arguments will be interpreted as radians.
+- With three arguments an instance of `longitude`, `latitude` is created, numerical arguments both interpreted according to `longUnit`.
+- With four arguments an instance of `longitude`, `latitude` is created, numerical arguments interpreted according to `longUnit` and `latUnit`, respectively.
+
+### Accessors
+
+`altitude`, `azimuth`, `declination`, `latitude`, `longitude`, `rightAscension`
+
+`azimuth` and `rightAscension` are equivalent to `longitude`.
+
+`altitude` and `declination` are equivalent to `latitude`.
+
+### Method
+
+```typescript
+distanceFrom(p: SphericalPosition): Angle
+```
+
+This method computes the angular distance between a `SphericalPosition` instance and another `SphericalPosition` instance.
+
+## The `SphericalPosition3D` class
+
+Instances of this class are a subclass of `SphericalPosition` with the addition of a radius value, specifying a unique point in a 3D space.
+
+### Constructor
+
+```typescript
+constructor(longitude?: Angle | number, latitude?: Angle | number,
+            radius = 0, longUnit?: Unit, latUnit?: Unit)
+```
+
+This works the same way as the `SphericalPosition` constructor, with the addition of a `radius` argument.
+
+### Static `SphericalPosition3D` factory methods
+
+```typescript
+SphericalPosition3D.convertRectangular(x: number, y: number, z: number): SphericalPosition3D
+SphericalPosition3D.convertRectangular(point: Point3D): SphericalPosition3D
+```
+
+These methods convert rectangle coordinates to 3D spherical coordinates.
+
+```typescript
+from2D(pos: SphericalPosition, radius: number): SphericalPosition3D
+```
+
+This method creates a `SphericalPosition3D` instance from a `SphericalPosition` instance and a `radius` value.
+
+### Accessors
+
+`radius`: The radius value.
+
+`xyz`: The rectangular coordinates for the `SphericalPosition3D` instance.
+
