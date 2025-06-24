@@ -43,7 +43,7 @@ For the old-fashioned UMD approach:
 <script src="https://unpkg.com/@tubular/math/dist/index.min.js"></script>
 ```
 
-The **@tubular/math** package will be made available via the global variable `tbMath`. Functions, classes, and constants will also be available via this variable, such as `tbMath.`, `tbMath.`, `tbMath.`, etc.
+The **@tubular/math** package will be made available via the global variable `tbMath`. Functions, classes, and constants will also be available via this variable, such as `tbMath.cos_deg`, `tbMath.interpolate`, `tbMath.union`, etc.
 
 ## Simple pass-through functions and constants from `Math`
 
@@ -124,7 +124,7 @@ Same as `Math.cos`, but accepts an argument in degrees rather than radians.
 function div_tt0(x: number, y: number): number;
 ```
 
-Integer division with "truncation toward zero", that is positive results of _x_/_y_ round downward to the nearest integer, and negative results round upward to the nearest integer.
+Integer division with “truncation toward zero”, that is, positive results of _x_/_y_ round downward to the nearest integer, and negative results round upward to the nearest integer.
 
 ```typescript
 function div_rd(x: number, y: number): number;
@@ -150,7 +150,7 @@ function interpolateModular(x0: number, x: number, x1: number, y0: number, y1: n
 
 This function works identically to the `interpolate` function above except that results are pinned within a modular range of [0, _modulus_) when `signedResult` is omitted or `false`, or [‑_modulus_/2, _modulus_/2) if `signedResult` is true.
 
-This is useful for interpolating angular values, not only to pin results to a range such as [0, 360) or [‑180, 180), but when the input value might span across a modular discontinuity.
+This is useful for interpolating angular values, not only to pin results to a range such as [0, 360) or [‑180, 180), but when the input values might span across a modular discontinuity.
 
 ```typescript
 function interpolateTabular(xx: number[], yy: number[], x: number, maxSpan = 0): number;
@@ -164,6 +164,15 @@ _Note: Using a non-zero `maxSpan` imposes the requirement that the `xx` array be
 
 What the `maxSpan` limit achieves, in terms of the example cited, is the creation of three separate types of results: results that are based only on historical values, results which are based only on predicative values, and a transitional range of results where the interpolation smoothly blends the two source ranges using weighted averaging.
 
+
+```typescript
+function irandom(maxValue: number): number;
+function irandom(lowest: number, highest: number): number;
+```
+
+- With one argument, this function returns a random integer in the range [1, maxValue].
+- With two arguments, this function returns a random integer in the range [lowest, highest].
+
 ```typescript
 function limitNeg1to1(x: number): number;
 ```
@@ -174,7 +183,7 @@ Returns the value of _x_ pinned within the range [‑1, 1], a function particula
 function mod(x: number, y: number): number;
 ```
 
-This is equivalent to `x % y` except for the function’s behavior with negative argument values. The resulting value always tracks the sign of `y`, not the sign of `x`. When `y` is positive, the returned value will be in the range &#91;0, _y_). When `y` is negative, the returned value will be in the range (_y_, 0]. _(This matches the behavior of the Python `%` operator.)_
+This is equivalent to `x % y` except for the function’s behavior with negative argument values. The resulting value tracks the sign of `y`, not the sign of `x`. When `y` is positive, the returned value will be in the range &#91;0, _y_). When `y` is negative, the returned value will be in the range (_y_, 0]. _(This matches the behavior of the Python `%` operator.)_
 
 ```typescript
 function mod2(x: number, y: number): number;
@@ -293,7 +302,7 @@ constructor(angle = 0, unit?: Unit, mode = Mode.RANGE_LIMIT_SIGNED)
 Angle.parse(s: string, throwException = false): Angle
 ```
 
-This method parses a string, either in degrees or hours, and an Angle instance. If the string can't be parsed as a valid value, the method either returns `null`, or if `throwException` is specified and `true`, throws an "Invalid angle" exception.
+This method parses a string, either in degrees or hours, and an Angle instance. If the string can’t be parsed as a valid value, the method either returns `null`, or if `throwException` is specified and `true`, throws an "Invalid angle" exception.
 
 If the characters `h` or `m`, are found within the string, the angle is treated as an hour angle, otherwise the angle is considered to be in degrees. A leading `-` will negate the angle value, or, when parsing degree values, a trailing `e` or `s` will negate the value. (These rules are case-insensitive.)
 
