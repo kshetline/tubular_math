@@ -502,3 +502,20 @@ This method creates a `SphericalPosition3D` instance from a `SphericalPosition` 
 
 `xyz`: The rectangular coordinates for the `SphericalPosition3D` instance.
 
+## The `MinMaxFinder` class
+
+This class finds estimated minima or maxima of numerical functions by parabolic interpolation, using Brent’s Method.
+
+### Constructor
+
+```typescript
+ constructor(minMaxSeekingFunction: (x: number) => number,
+             tolerance: number, maxIterations: number,
+             xa: number, xb: number, xc: number)
+```
+
+This creates an instance of `MinMaxFinder` to find the _x_ value for which the value `minMaxSeekingFunction(x)` reaches a minimum (or maximum) value over the range _x_<sub>a</sub> ≤ _x_ ≤ _x_<sub>c</sub>, using the value _x_<sub>b</sub> (also in the range _x_<sub>a</sub> ≤ _x_<sub>b</sub> ≤ _x_<sub>c</sub>) as a hint for whether a minimum or maximum value should be sought.
+
+Seeking is an iterative process. Once the difference in estimates between successive iterations is less than or equal to `tolerance` an estimate with be returned.
+
+Often very accurate estimates can be found in less than 10 iterations, but `maxIterations` puts a limit on how many iterations will be attempted before possibly giving up, as some functions cannot be guaranteed to produce a solution.

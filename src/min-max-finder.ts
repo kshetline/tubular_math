@@ -13,7 +13,7 @@ export class MinMaxFinder {
   private isMin = true;
 
   constructor(private minMaxSeekingFunction: (x: number) => number, private tolerance: number, private maxIterations: number,
-              private ax: number, private bx: number, private cx: number) {
+              private xa: number, private xb: number, private xc: number) {
   }
 
   getXAtMinMax(): number {
@@ -37,13 +37,13 @@ export class MinMaxFinder {
     let e = 0;
     let sign = 1;
 
-    a = Math.min(this.ax, this.cx);
-    b = Math.max(this.ax, this.cx);
-    x = w = v = this.bx;
+    a = Math.min(this.xa, this.xc);
+    b = Math.max(this.xa, this.xc);
+    x = w = v = this.xb;
     this.fx = this.minMaxSeekingFunction(x);
 
     // Reverse the sign of the evaluated function if we're searching for a max rather than a min.
-    if (this.fx > this.minMaxSeekingFunction(this.ax)) {
+    if (this.fx > this.minMaxSeekingFunction(this.xa)) {
       this.isMin = false;
       this.fx *= -1;
       sign = -1;
