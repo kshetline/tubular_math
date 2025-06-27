@@ -519,3 +519,36 @@ This creates an instance of `MinMaxFinder` to find the _x_ value for which the v
 Seeking is an iterative process. Once the difference in estimates between successive iterations is less than or equal to `tolerance` an estimate with be returned.
 
 Often very accurate estimates can be found in less than 10 iterations, but `maxIterations` puts a limit on how many iterations will be attempted before possibly giving up, as some functions cannot be guaranteed to produce a solution.
+
+### Method
+
+```typescript
+getXAtMinMax(): number
+```
+
+Returns the estimated value of _x_ at the minimum (or maximum) point of the function `minMaxSeekingFunction` in the range _x_<sub>a</sub> ≤ _x_ ≤ _x_<sub>c</sub> within `tolerance` of the best possible estimate, or the closest approximation reached when `maxIterations` have been exhausted.
+
+### Accessors
+
+_Note: using any accessor will invoke `getXAtMinMax()` if it has not already been invoked._
+
+`foundMaximum`
+
+`true` if a maximum value rather than a minimum value was found. `true` does not signify, however, that the result is a valid result found within `tolerance` or `maxIterations`.
+
+`foundMinimum`
+
+`true` if a minimum value rather than a maximum value was found. `true` does not signify, however, that the result is a valid result found within `tolerance` or `maxIterations`.
+
+`lastY`
+
+The last _y_ value computed when either a solution was found or `maxIterations` were exhausted.
+
+`iterationCount`
+
+The total number of iterations needed either to solve for the min/max value, or when `maxIterations` was reached.
+
+`resolved`
+
+`true` if a valid estimate was found within `tolerance` before `maxIterations` were exhausted.
+

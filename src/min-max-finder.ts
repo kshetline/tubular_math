@@ -11,12 +11,17 @@ export class MinMaxFinder {
   private _iterationCount = 0;
   private fx: number;
   private isMin = true;
+  private _resolved = false;
+  private _x: number;
 
   constructor(private minMaxSeekingFunction: (x: number) => number, private tolerance: number, private maxIterations: number,
               private xa: number, private xb: number, private xc: number) {
   }
 
   getXAtMinMax(): number {
+    if (this._x != null)
+      return this._x;
+
     let a: number;
     let b: number;
     let d = 0;
@@ -61,6 +66,8 @@ export class MinMaxFinder {
 
       if (abs(x - xm) <= tol2 - 0.5 * (b - a)) {
         this.fx *= sign;
+        this._resolved = true;
+        this._x = x;
 
         return x;
       }
@@ -128,15 +135,43 @@ export class MinMaxFinder {
     }
 
     this.fx *= sign;
+    this._x = x;
 
     return x;
   }
 
-  get foundMaximum(): boolean { return !this.isMin; }
+  get foundMaximum(): boolean {
+    if (this._x == null)
+      this.getXAtMinMax();
 
-  get foundMinimum(): boolean { return this.isMin; }
+    return !this.isMin;
+  }
 
-  get lastY(): number { return this.fx; }
+  get foundMinimum(): boolean {
+    if (this._x == null)
+      this.getXAtMinMax();
 
-  get iterationCount(): number { return this._iterationCount; }
+    return this.isMin;
+  }
+
+  get lastY(): number {
+    if (this._x == null)
+      this.getXAtMinMax();
+
+    return this.fx;
+  }
+
+  get iterationCount(): number {
+    if (this._x == null)
+      this.getXAtMinMax();
+
+    return this._iterationCount;
+  }
+
+  get resolved(): boolean {
+    if (this._x == null)
+      this.getXAtMinMax();
+
+    return this._resolved && isFinite(this.fx) && !isNaN(this.fx);
+  }
 }
