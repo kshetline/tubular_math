@@ -580,7 +580,7 @@ This constructor works the same as above except that the values _y_<sub>1</sub> 
 getXAtZero(): number
 ```
 
-Returns the estimated value of _x_ in the range _x_<sub>1</sub> ≤ _x_ ≤ _x_<sub>2</sub> for which the function `zeroSeekingFunction(x)` reaches 0, within `tolerance` of the best possible estimate, or the closest approximation reached when `maxIterations` have been exhausted. The returned value might be `NaN` if the value of `zeroSeekingFunction(x)` was always negative or always positive.
+Returns the estimated value of _x_ in the range _x_<sub>1</sub> ≤ _x_ ≤ _x_<sub>2</sub> for which the function `zeroSeekingFunction(x)` reaches 0, within `tolerance` of the best possible estimate, or the closest approximation reached when `maxIterations` have been exhausted.
 
 The value of `tolerance` applies not only to the difference between successive estimates of _x_, but to how close `zeroSeekingFunction(x)` is to 0.
 

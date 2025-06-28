@@ -10,8 +10,6 @@ export class ZeroFinder {
   private _resolved = false;
   private _x: number;
   private xForY: number;
-  private everNegative = false;
-  private everPositive = false;
 
   constructor(zeroSeekingFunction: (x: number) => number, tolerance: number, maxIterations: number,
     x1: number, x2: number);
@@ -51,8 +49,6 @@ export class ZeroFinder {
 
         x = slope ? this.x1 - this.y1 / slope : (this.x1 + this.x2) / 2;
         this.y = this.zeroSeekingFunction(x);
-        this.everNegative ||= this.y < 0;
-        this.everPositive ||= this.y > 0;
 
         if (Math.abs(this.y) <= this.tolerance) {
           this._resolved = Math.abs(this.x2 - this.x1) <= this.tolerance;
@@ -86,9 +82,6 @@ export class ZeroFinder {
           let sign = Math.sign(y);
 
           do {
-            this.everNegative ||= y < 0;
-            this.everPositive ||= y > 0;
-
             if (Math.abs(y) <= this.tolerance && step <= this.tolerance) {
               this._resolved = true;
               this.y = y;
@@ -117,11 +110,6 @@ export class ZeroFinder {
       }
       else
         break;
-    }
-
-    if (Math.abs(this.y) > this.tolerance && !(this.everNegative && this.everPositive)) {
-      x = NaN;
-      this.y = NaN;
     }
 
     this._x = x;

@@ -2,7 +2,7 @@
 
 * Added `Angle.parse` method.
 * Added missing `Math.`_xxx_ convenience pass-through constants `E`, `LN10`, `LN2`, `LOG10E`, `LOG2E`, `SQRT1_2`, `SQRT2`.
-* Added `resolved` accessor to `MinMaxFinder`.
+* Added `resolved` accessor to `MinMaxFinder` and `ZeroFinder`.
 * Added full documentation.
 * Improved sourcemaps.
 * CHANGELOG.md started (earlier changes listed below documented retroactively).

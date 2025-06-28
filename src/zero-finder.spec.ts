@@ -41,12 +41,10 @@ describe('ZeroFinder', () => {
   it('should correctly handle not being able to find a zero value', () => {
     let zf = new ZeroFinder(x => x ** 2 + 1, tolerance, 50, -2, 2);
 
-    expect(zf.getXAtZero()).to.be.NaN;
     expect(zf.resolved).to.be.false;
 
     zf = new ZeroFinder(x => -(x ** 2) - 1, tolerance, 50, -2, 2);
 
-    expect(zf.getXAtZero()).to.be.NaN;
     expect(zf.resolved).to.be.false;
   });
 });
