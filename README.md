@@ -552,3 +552,51 @@ The total number of iterations needed either to solve for the min/max value, or 
 
 `true` if a valid estimate was found within `tolerance` before `maxIterations` were exhausted.
 
+## The `ZeroFinder` class
+
+This class finds estimated zero-axis crossing points of functions, i.e. _x_ values at which _f_(_x_) transitions from a negative to a positive value, or vice-versa.
+
+### Constructors
+
+```typescript
+  constructor(zeroSeekingFunction: (x: number) => number, tolerance: number,
+              maxIterations: number, x1: number, x2: number)
+```
+
+This creates an instance of `ZeroFinder` to find the estimated _x_ value at which the value `zeroSeekingFunction(x)` becomes zero, over the range _x_<sub>1</sub> ≤ _x_ ≤ _x_<sub>2</sub>.
+
+Like `MinMaxFinder`, a solution is found using an iterative process. Once the difference in estimates between successive iterations is less than or equal to `tolerance` an estimate with be returned.
+
+```typescript
+  constructor(zeroSeekingFunction: (x: number) => number, tolerance: number,
+              maxIterations: number, x1: number, y1: number, x2: number, y2: number)
+```
+
+This constructor works the same as above except that the values _y_<sub>1</sub> and _y_<sub>2</sub> corresponding to  _x_<sub>1</sub> and _x_<sub>2</sub> are provided precomputed.
+
+### Method
+
+```typescript
+getXAtZero(): number
+```
+
+Returns the estimated value of _x_ in the range _x_<sub>1</sub> ≤ _x_ ≤ _x_<sub>2</sub> for which the function `zeroSeekingFunction(x)` reaches 0, within `tolerance` of the best possible estimate, or the closest approximation reached when `maxIterations` have been exhausted. The returned value might be `NaN` if the value of `zeroSeekingFunction(x)` was always negative or always positive.
+
+The value of `tolerance` applies not only to the difference between successive estimates of _x_, but to how close `zeroSeekingFunction(x)` is to 0.
+
+### Accessors
+
+_Note: using any accessor will invoke `getXAtZero()` if it has not already been invoked._
+
+`lastY`
+
+The last _y_ value computed when either a solution was found or `maxIterations` were exhausted.
+
+`iterationCount`
+
+The total number of iterations needed either to solve for the min/max value, or when `maxIterations` was reached.
+
+`resolved`
+
+`true` if a valid estimate was found within `tolerance` before `maxIterations` were exhausted.
+

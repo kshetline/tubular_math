@@ -9,6 +9,9 @@ export class ZeroFinder {
   private y2: number;
   private _resolved = false;
   private _x: number;
+  private xForY: number;
+  private everNegative = false;
+  private everPositive = false;
 
   constructor(zeroSeekingFunction: (x: number) => number, tolerance: number, maxIterations: number,
     x1: number, x2: number);
@@ -37,16 +40,23 @@ export class ZeroFinder {
     let maxIter = this.maxIterations / 2;
     let triedIntervals = false;
 
-    this._iterationCount = 0;
+    this._iterationCount = 1;
 
+    outerLoop:
     while (!this._resolved) {
+      --this._iterationCount;
+
       while (++this._iterationCount <= maxIter && !this._resolved) {
-        x = this.x1 - this.y1 / (this.y2 - this.y1) * (this.x2 - this.x1);
+        const slope = (this.y2 - this.y1) / (this.x2 - this.x1);
+
+        x = slope ? this.x1 - this.y1 / slope : (this.x1 + this.x2) / 2;
         this.y = this.zeroSeekingFunction(x);
+        this.everNegative ||= this.y < 0;
+        this.everPositive ||= this.y > 0;
 
         if (Math.abs(this.y) <= this.tolerance) {
           this._resolved = Math.abs(this.x2 - this.x1) <= this.tolerance;
-          this._x = x;
+          this.xForY = this._x = x;
           break;
         }
 
@@ -61,22 +71,29 @@ export class ZeroFinder {
       }
 
       if (!this._resolved && !triedIntervals) {
+        let xa = this.x1;
+        let xb = this.x2;
+
+        --this._iterationCount;
         triedIntervals = true;
         maxIter = this.maxIterations;
 
-        outer:
         while (++this._iterationCount <= maxIter) {
-          const step = (this.x2 - this.x1) / INTERVALS;
+          const step = (xb - xa) / INTERVALS;
           let i = 1;
-          x = this.x1;
+          x = xa;
           let y = this.zeroSeekingFunction(x);
           let sign = Math.sign(y);
 
           do {
+            this.everNegative ||= y < 0;
+            this.everPositive ||= y > 0;
+
             if (Math.abs(y) <= this.tolerance && step <= this.tolerance) {
               this._resolved = true;
               this.y = y;
-              break outer;
+              this.xForY = x;
+              break outerLoop;
             }
 
             x += step;
@@ -84,8 +101,8 @@ export class ZeroFinder {
             const sign2 = Math.sign(y);
 
             if (sign2 !== sign) {
-              this.x1 = x - step;
-              this.x2 = x;
+              xa = x - step;
+              xb = x;
               x = x - step / 2;
               break;
             }
@@ -95,10 +112,16 @@ export class ZeroFinder {
             break;
         }
 
-        this.y = this.zeroSeekingFunction(x); // A last approximation in case iterations are exhausted
+        if (this.xForY !== x)
+          this.y = this.zeroSeekingFunction(x); // A last approximation in case iterations are exhausted
       }
       else
         break;
+    }
+
+    if (Math.abs(this.y) > this.tolerance && !(this.everNegative && this.everPositive)) {
+      x = NaN;
+      this.y = NaN;
     }
 
     this._x = x;
