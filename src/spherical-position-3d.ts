@@ -38,7 +38,7 @@ export class SphericalPosition3D extends SphericalPosition {
   private _xyz: Point3D;
 
   get xyz(): Point3D {
-    if (!!this._xyz)
+    if (!this._xyz)
       this._xyz = {
         x: this._radius * this._latitude.cos * this._longitude.cos,
         y: this._radius * this._latitude.cos * this._longitude.sin,
