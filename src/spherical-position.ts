@@ -6,43 +6,46 @@ export class SphericalPosition {
   protected _latitude: Angle;
 
   constructor(longitude: Angle | number = 0, latitude: Angle | number = 0,
-              longUnit = Unit.RADIANS, latUnit = Unit.RADIANS) {
+              longUnit = Unit.RADIANS, latUnit?: Unit) {
+    if (latUnit == null)
+      latUnit = longUnit;
+
     if (typeof longitude === 'number')
-      this._longitude = new Angle(<number> longitude, longUnit, Mode.RANGE_LIMIT_NONNEGATIVE);
+      this._longitude = new Angle(longitude, longUnit, Mode.RANGE_LIMIT_NONNEGATIVE);
     else
-      this._longitude = <Angle> longitude;
+      this._longitude = longitude;
 
     if (typeof latitude === 'number')
-      this._latitude = new Angle(<number> latitude, latUnit);
+      this._latitude = new Angle(latitude, latUnit);
     else
-      this._latitude = <Angle> latitude;
+      this._latitude = latitude;
   }
 
-  public get longitude(): Angle {
+  get longitude(): Angle {
     return this._longitude;
   }
 
-  public get rightAscension(): Angle {
+  get rightAscension(): Angle {
     return this._longitude;
   }
 
-  public get altitude(): Angle {
+  get altitude(): Angle {
     return this._latitude;
   }
 
-  public get azimuth(): Angle {
+  get azimuth(): Angle {
     return this._longitude;
   }
 
-  public get latitude(): Angle {
+  get latitude(): Angle {
     return this._latitude;
   }
 
-  public get declination(): Angle {
+  get declination(): Angle {
     return this._latitude;
   }
 
-  public distanceFrom(p: SphericalPosition): Angle {
+  distanceFrom(p: SphericalPosition): Angle {
     // Tiny rounding errors which can make the argument of acos very slightly larger than 1.0
     // or very slight smaller than -1.0 are enough to blow up the acos function and get you a
     // NaN for your trouble.
@@ -56,7 +59,7 @@ export class SphericalPosition {
     return new Angle(d);
   }
 
-  public toString(): string {
-    return 'lon: ' + this.longitude + ', lat: ' + this.latitude;
+  toString(): string {
+    return `lon: ${this.longitude}, lat: ${this.latitude}`;
   }
 }

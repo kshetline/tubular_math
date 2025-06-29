@@ -1,3 +1,7 @@
+// Parabolic interpolation via Brent's Method, translated from Numerical Recipes in C.
+
+/* eslint-disable @stylistic/no-multi-spaces */
+
 import { abs } from './math';
 
 const CGOLD = 0.381966011250105; // (3 - sqrt(5)) / 2
@@ -7,15 +11,20 @@ export class MinMaxFinder {
   private _iterationCount = 0;
   private fx: number;
   private isMin = true;
+  private _resolved = false;
+  private _x: number;
 
   constructor(private minMaxSeekingFunction: (x: number) => number, private tolerance: number, private maxIterations: number,
-              private ax: number, private bx: number, private cx: number) {
+              private xa: number, private xb: number, private xc: number) {
   }
 
-  public getXAtMinMax(): number {
+  getXAtMinMax(): number {
+    if (this._x != null)
+      return this._x;
+
     let a: number;
     let b: number;
-    let d = 0.0;
+    let d = 0;
     let etemp: number;
     let fu: number;
     let fv: number;
@@ -30,19 +39,19 @@ export class MinMaxFinder {
     let w: number;
     let x: number;
     let xm: number;
-    let e = 0.0;
-    let sign = 1.0;
+    let e = 0;
+    let sign = 1;
 
-    a = (this.ax < this.cx ? this.ax : this.cx);
-    b = (this.ax > this.cx ? this.ax : this.cx);
-    x = w = v = this.bx;
+    a = Math.min(this.xa, this.xc);
+    b = Math.max(this.xa, this.xc);
+    x = w = v = this.xb;
     this.fx = this.minMaxSeekingFunction(x);
 
     // Reverse the sign of the evaluated function if we're searching for a max rather than a min.
-    if (this.fx > this.minMaxSeekingFunction(this.ax)) {
+    if (this.fx > this.minMaxSeekingFunction(this.xa)) {
       this.isMin = false;
       this.fx *= -1;
-      sign = -1.0;
+      sign = -1;
     }
     else
       this.isMin = true;
@@ -53,10 +62,12 @@ export class MinMaxFinder {
     while (++this._iterationCount <= this.maxIterations) {
       xm = 0.5 * (a + b);
       tol1 = this.tolerance * abs(x) + ZEPS;
-      tol2 = 2.0 * tol1;
+      tol2 = 2 * tol1;
 
       if (abs(x - xm) <= tol2 - 0.5 * (b - a)) {
         this.fx *= sign;
+        this._resolved = true;
+        this._x = x;
 
         return x;
       }
@@ -65,9 +76,9 @@ export class MinMaxFinder {
         r = (x - w) * (this.fx - fv);
         q = (x - v) * (this.fx - fw);
         p = (x - v) * q - (x - w) * r;
-        q = 2.0 * (q - r);
+        q = 2 * (q - r);
 
-        if (q > 0.0)
+        if (q > 0)
           p = -p;
 
         q = abs(q);
@@ -82,6 +93,7 @@ export class MinMaxFinder {
           d = p / q;
           u = x + d;
 
+          /* istanbul ignore next */ // TODO: Does this condition ever come up?
           if (u - a < tol2 || b - u < tol2)
             d = Math.sign(xm - x) * tol1;
         }
@@ -123,15 +135,43 @@ export class MinMaxFinder {
     }
 
     this.fx *= sign;
+    this._x = x;
 
     return x;
   }
 
-  public get foundMaximum(): boolean { return !this.isMin; }
+  get foundMaximum(): boolean {
+    if (this._x == null)
+      this.getXAtMinMax();
 
-  public get foundMinimum(): boolean { return this.isMin; }
+    return !this.isMin;
+  }
 
-  public get lastY(): number { return this.fx; }
+  get foundMinimum(): boolean {
+    if (this._x == null)
+      this.getXAtMinMax();
 
-  public get iterationCount(): number { return this._iterationCount; }
+    return this.isMin;
+  }
+
+  get lastY(): number {
+    if (this._x == null)
+      this.getXAtMinMax();
+
+    return this.fx;
+  }
+
+  get iterationCount(): number {
+    if (this._x == null)
+      this.getXAtMinMax();
+
+    return this._iterationCount;
+  }
+
+  get resolved(): boolean {
+    if (this._x == null)
+      this.getXAtMinMax();
+
+    return this._resolved && isFinite(this.fx) && !isNaN(this.fx);
+  }
 }

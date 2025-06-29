@@ -25,23 +25,23 @@ export const acos = Math.acos;
 export const acosh = Math.acosh;
 
 export function acos_deg(x: number): number {
-  return Math.acos(x) / Math.PI * 180.0;
+  return Math.acos(x) / Math.PI * 180;
 }
 
 export function acot(x: number): number {
-  return Math.PI / 2.0 - Math.atan(x);
+  return Math.PI / 2 - Math.atan(x);
 }
 
-export function acot2(a: number, b: number): number {
-  return Math.PI / 2.0 - Math.atan2(a, b);
+export function acot2(y: number, x: number): number {
+  return Math.PI / 2 - Math.atan2(y, x);
 }
 
 export function acot_deg(x: number): number {
-  return 180.0 - Math.atan(x) / Math.PI * 180.0;
+  return 180 - Math.atan(x) / Math.PI * 180;
 }
 
 export function acot2_deg(a: number, b: number): number {
-  return 180.0 - Math.atan2(a, b) / Math.PI * 180.0;
+  return 180 - Math.atan2(a, b) / Math.PI * 180;
 }
 
 export const asin = Math.asin;
@@ -49,7 +49,7 @@ export const asin = Math.asin;
 export const asinh = Math.asinh;
 
 export function asin_deg(x: number): number {
-  return Math.asin(x) / Math.PI * 180.0;
+  return Math.asin(x) / Math.PI * 180;
 }
 
 export const atan = Math.atan;
@@ -59,11 +59,11 @@ export const atan2 = Math.atan2;
 export const atanh = Math.atanh;
 
 export function atan_deg(x: number): number {
-  return Math.atan(x) / Math.PI * 180.0;
+  return Math.atan(x) / Math.PI * 180;
 }
 
 export function atan2_deg(a: number, b: number): number {
-  return Math.atan2(a, b) / Math.PI * 180.0;
+  return Math.atan2(a, b) / Math.PI * 180;
 }
 
 export const cbrt = Math.cbrt;
@@ -82,7 +82,7 @@ export const cos = Math.cos;
 export const cosh = Math.cosh;
 
 export function cos_deg(x: number): number {
-  return Math.cos(x / 180.0 * Math.PI);
+  return Math.cos(x / 180 * Math.PI);
 }
 
 /**
@@ -103,6 +103,8 @@ export function div_tt0(x: number, y: number): number {
 export function div_rd(x: number, y: number): number {
   return Math.floor(x / y);
 }
+
+export const E = Math.E;
 
 export const exp = Math.exp;
 
@@ -154,10 +156,10 @@ export function interpolateModular(x0: number, x: number, x1: number, y0: number
 }
 
 function interpolateOverIntRange(xx: number[], yy: number[], x: number, a: number, b: number): number {
-  let y = 0.0;
+  let y = 0;
 
   for (let i = a; i <= b; ++i) {
-    let c = 1.0;
+    let c = 1;
 
     for (let j = a; j <= b; ++j) {
       if (j !== i)
@@ -193,10 +195,10 @@ function interpolateAux(xx: number[], yy: number[], x: number, maxSpan: number, 
 // Note: To use maxSpan (by specifying a positive value) array data must be pre-sorted
 // by ascending x value.
 //
-export function interpolateTabular(xx: number[], yy: number[], x: number, maxSpan: number): number {
+export function interpolateTabular(xx: number[], yy: number[], x: number, maxSpan = 0): number {
   const n = Math.min(xx.length, yy.length);
 
-  if (maxSpan <= 0.0)
+  if (maxSpan <= 0)
     return interpolateOverIntRange(xx, yy, x, 0, n - 1);
 
   // To avoid sudden jumps in the return value of this function as we shift
@@ -235,7 +237,7 @@ export function interpolateTabular(xx: number[], yy: number[], x: number, maxSpa
   const ya = interpolateAux(xx, yy, x, maxSpan, xa);
   const yb = interpolateAux(xx, yy, x, maxSpan, xb);
 
-  return ya * (1.0 - weight) + yb * weight;
+  return ya * (1 - weight) + yb * weight;
 }
 
 export function intersects(r1: Rectangle, r2: Rectangle): boolean {
@@ -252,32 +254,44 @@ export function irandom(lowestOrMax?: number, highest?: number): number {
   return lowestOrMax + Math.floor(Math.random() * (highest - lowestOrMax + 1));
 }
 
-export function limitNeg1to1(x: number, tolerance = 0.01): number {
+function _limitNeg1to1(x: number, tolerance = 0.01): number {
   if (x < -1 - tolerance) {
+    /* istanbul ignore next */
     if (debug) {
       console.debug('Value out of range: ' + x + ' < -1.0');
       console.trace();
     }
 
-    return -1.0;
+    return -1;
   }
   else if (x > 1 + tolerance) {
+    /* istanbul ignore next */
     if (debug) {
       console.debug('Value out of range: ' + x + ' > 1.0');
       console.trace();
     }
 
-    return 1.0;
+    return 1;
   }
-  else if (x < -1.0)
-    return -1.0;
-  else if (x > 1.0)
-    return 1.0;
+  else if (x < -1)
+    return -1;
+  else if (x > 1)
+    return 1;
   else
     return x;
 }
 
-export const HALF_PI = Math.PI / 2.0;
+export const limitNeg1to1: (x: number) => number = _limitNeg1to1;
+
+export const LN10 = Math.LN10;
+
+export const LN2 = Math.LN2;
+
+export const LOG10E = Math.LOG10E;
+
+export const LOG2E = Math.LOG2E;
+
+export const HALF_PI = Math.PI / 2;
 
 export const log = Math.log;
 
@@ -307,13 +321,13 @@ export function mod(x: number, y: number): number {
 
 /**
  * For use with values such as angles, this modulo function splits the range of the modulus
- * between negative and positive numbers, [-y/2, y/2), e.g. for a y of 360, the result ranges
+ * between negative and positive numbers, [-y/2, y/2), e.g., for a y of 360, the result ranges
  * from -180 up to (but not including) 180. This function can return non-integer values.
  */
 export function mod2(x: number, y: number): number {
   let result = x - Math.floor(x / y) * y;
 
-  if (result >= y / 2.0)
+  if (result >= y / 2)
     result -= y;
 
   return result;
@@ -345,17 +359,17 @@ export function round(x: number, multiple = 1): number {
 export const sign = Math.sign;
 
 export function signZN(x: number): number {
-  if (x > 0.0)
-    return 1.0;
+  if (x > 0)
+    return 1;
   else
-    return -1.0;
+    return -1;
 }
 
 export function signZP(x: number): number {
-  if (x < 0.0)
-    return -1.0;
+  if (x < 0)
+    return -1;
   else
-    return 1.0;
+    return 1;
 }
 
 export const sin = Math.sin;
@@ -363,10 +377,14 @@ export const sin = Math.sin;
 export const sinh = Math.sinh;
 
 export function sin_deg(x: number): number {
-  return Math.sin(x / 180.0 * Math.PI);
+  return Math.sin(x / 180 * Math.PI);
 }
 
 export const sqrt = Math.sqrt;
+
+export const SQRT1_2 = Math.SQRT1_2;
+
+export const SQRT2 = Math.SQRT2;
 
 export function squared(x: number): number {
   return x * x;
@@ -377,15 +395,15 @@ export const tan = Math.tan;
 export const tanh = Math.tanh;
 
 export function tan_deg(x: number): number {
-  return Math.tan(x / 180.0 * Math.PI);
+  return Math.tan(x / 180 * Math.PI);
 }
 
 export function to_degree(x: number): number {
-  return x * 180.0 / Math.PI;
+  return x * 180 / Math.PI;
 }
 
 export function to_radian(x: number): number {
-  return x * Math.PI / 180.0;
+  return x * Math.PI / 180;
 }
 
 export const trunc = Math.trunc;
