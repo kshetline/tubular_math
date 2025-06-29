@@ -1,6 +1,6 @@
 {
   "name": "@tubular/math",
-  "version": "3.4.0-alpha.0",
+  "version": "3.4.0",
   "description": "Miscellaneous math functions",
   "module": "dist/index.min.mjs",
   "main": "dist/index.min.cjs",
