@@ -39,12 +39,19 @@ describe('ZeroFinder', () => {
   });
 
   it('should correctly handle not being able to find a zero value', () => {
-    let zf = new ZeroFinder(x => x ** 2 + 1, tolerance, 50, -2, 2);
+    let zf = new ZeroFinder(x => x ** 2 + 1, tolerance, 50, -2, 2, 0.01);
 
+    expect(zf.getXAtZero()).to.be.NaN;
     expect(zf.resolved).to.be.false;
 
-    zf = new ZeroFinder(x => -(x ** 2) - 1, tolerance, 50, -2, 2);
+    zf = new ZeroFinder(x => x ** 2 + 0.0001, tolerance, 50, -2, 2, 0.01);
 
+    expect(zf.getXAtZero()).to.not.be.NaN;
     expect(zf.resolved).to.be.false;
+
+    zf = new ZeroFinder(_x => 1, tolerance, 50, 0, 5, 0.01);
+
+    expect(zf.getXAtZero()).to.be.NaN;
+    expect(zf.iterationCount).to.equal(4);
   });
 });

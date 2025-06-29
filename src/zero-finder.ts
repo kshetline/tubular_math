@@ -10,23 +10,28 @@ export class ZeroFinder {
   private _resolved = false;
   private _x: number;
   private xForY: number;
+  private maxError = 0;
 
   constructor(zeroSeekingFunction: (x: number) => number, tolerance: number, maxIterations: number,
-    x1: number, x2: number);
+    x1: number, x2: number, maxError?: number);
 
   constructor(zeroSeekingFunction: (x: number) => number, tolerance: number, maxIterations: number,
-    x1: number, y1: number, x2: number, y2: number);
+    x1: number, y1: number, x2: number, y2: number, maxError?: number);
 
   constructor(private zeroSeekingFunction: (x: number) => number, private tolerance: number, private maxIterations: number,
-              private x1: number, private y1: number, x2?: number, y2?: number) {
-    if (x2 == null) {
+              private x1: number, private y1: number, x2?: number, y2?: number, maxError?: number) {
+    if (y2 == null) {
       this.x2 = y1;
       this.y1 = zeroSeekingFunction(x1);
       this.y2 = zeroSeekingFunction(y1);
+
+      if (x2 != null)
+        this.maxError = x2;
     }
     else {
       this.x2 = x2;
       this.y2 = y2;
+      this.maxError = maxError || 0;
     }
   }
 
@@ -34,9 +39,11 @@ export class ZeroFinder {
     if (this._x != null)
       return this._x;
 
-    let x: number;
+    let x;
+    let lastY: number | undefined = 0;
     let maxIter = this.maxIterations / 2;
-    let triedIntervals = false;
+    let tryIntervals = true;
+    let stayedTheSame = 0;
 
     this._iterationCount = 1;
 
@@ -49,6 +56,17 @@ export class ZeroFinder {
 
         x = slope ? this.x1 - this.y1 / slope : (this.x1 + this.x2) / 2;
         this.y = this.zeroSeekingFunction(x);
+
+        if (this.y === lastY) {
+          if (++stayedTheSame >= 3) {
+            tryIntervals = false;
+            break;
+          }
+        }
+        else
+          stayedTheSame = 0;
+
+        lastY = this.y;
 
         if (Math.abs(this.y) <= this.tolerance) {
           this._resolved = Math.abs(this.x2 - this.x1) <= this.tolerance;
@@ -66,19 +84,20 @@ export class ZeroFinder {
         }
       }
 
-      if (!this._resolved && !triedIntervals) {
+      if (!this._resolved && tryIntervals) {
         let xa = this.x1;
         let xb = this.x2;
 
         --this._iterationCount;
-        triedIntervals = true;
+        tryIntervals = false;
         maxIter = this.maxIterations;
 
         while (++this._iterationCount <= maxIter) {
           const step = (xb - xa) / INTERVALS;
           let i = 1;
-          x = xa;
+          let bestX = x = xa;
           let y = this.zeroSeekingFunction(x);
+          let bestY = Math.abs(y);
           let sign = Math.sign(y);
 
           do {
@@ -91,6 +110,12 @@ export class ZeroFinder {
 
             x += step;
             y = this.zeroSeekingFunction(x);
+
+            if (Math.abs(y) < bestY) {
+              bestX = x;
+              bestY = Math.abs(y);
+            }
+
             const sign2 = Math.sign(y);
 
             if (sign2 !== sign) {
@@ -101,8 +126,19 @@ export class ZeroFinder {
             }
           } while (++i <= INTERVALS);
 
-          if (i > INTERVALS)
-            break;
+          if (i > INTERVALS) {
+            if (this.maxError && bestY < this.maxError) {
+              xa = bestX - step;
+              xb = bestY + step;
+
+              if (maxIter === this.maxIterations)
+                maxIter = Math.min(this._iterationCount + 2, this.maxIterations);
+            }
+            else {
+              maxIter = this._iterationCount;
+              break;
+            }
+          }
         }
 
         if (this.xForY !== x)
@@ -110,6 +146,11 @@ export class ZeroFinder {
       }
       else
         break;
+    }
+
+    if (this.maxError && Math.abs(this.y) > this.maxError) {
+      x = NaN;
+      this.y = NaN;
     }
 
     this._x = x;

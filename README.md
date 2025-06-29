@@ -554,22 +554,24 @@ The total number of iterations needed either to solve for the min/max value, or 
 
 ## The `ZeroFinder` class
 
-This class finds estimated zero-axis crossing points of functions, i.e. _x_ values at which _f_(_x_) transitions from a negative to a positive value, or vice-versa.
+This class finds estimated zero-axis crossing/contact points of functions, i.e. _x_ values at which _f_(_x_) momentarily have a value of 0.
 
 ### Constructors
 
 ```typescript
   constructor(zeroSeekingFunction: (x: number) => number, tolerance: number,
-              maxIterations: number, x1: number, x2: number)
+              maxIterations: number, x1: number, x2: number, maxError?: number)
 ```
 
 This creates an instance of `ZeroFinder` to find the estimated _x_ value at which the value `zeroSeekingFunction(x)` becomes zero, over the range _x_<sub>1</sub> ≤ _x_ ≤ _x_<sub>2</sub>.
 
 Like `MinMaxFinder`, a solution is found using an iterative process. Once the difference in estimates between successive iterations is less than or equal to `tolerance` an estimate with be returned.
 
+If a `maxError` value is provided, and the absolute value of the closest-to-zero result found after `maxIterations` is greater than `maxError`, `getXAtZero()` will return `NaN`.
+
 ```typescript
   constructor(zeroSeekingFunction: (x: number) => number, tolerance: number,
-              maxIterations: number, x1: number, y1: number, x2: number, y2: number)
+              maxIterations: number, x1: number, y1: number, x2: number, y2: number, maxError?: number)
 ```
 
 This constructor works the same as above except that the values _y_<sub>1</sub> and _y_<sub>2</sub> corresponding to  _x_<sub>1</sub> and _x_<sub>2</sub> are provided precomputed.
@@ -583,6 +585,8 @@ getXAtZero(): number
 Returns the estimated value of _x_ in the range _x_<sub>1</sub> ≤ _x_ ≤ _x_<sub>2</sub> for which the function `zeroSeekingFunction(x)` reaches 0, within `tolerance` of the best possible estimate, or the closest approximation reached when `maxIterations` have been exhausted.
 
 The value of `tolerance` applies not only to the difference between successive estimates of _x_, but to how close `zeroSeekingFunction(x)` is to 0.
+
+`maxError` applies only to the closest-to-zero `zeroSeekingFunction(x)` value found, resulting in `getXAtZero()` returning `NaN` if the absolute value of that closest value exceeds `maxError`.
 
 ### Accessors
 
