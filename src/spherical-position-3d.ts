@@ -39,11 +39,11 @@ export class SphericalPosition3D extends SphericalPosition {
 
   get xyz(): Point3D {
     if (!this._xyz)
-      this._xyz = {
+      this._xyz = Object.freeze({
         x: this._radius * this._latitude.cos * this._longitude.cos,
         y: this._radius * this._latitude.cos * this._longitude.sin,
         z: this._radius * this._latitude.sin
-      };
+      });
 
     return this._xyz;
   }
